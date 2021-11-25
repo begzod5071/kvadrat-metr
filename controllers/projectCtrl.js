@@ -28,24 +28,14 @@ const projectCtrl = {
     try {
       const { title } = req.body;
 
-      
-
-
       res.json({ msg: "Updated project" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
   },
-  createProject: async (req, res) => {
+  deleteProject: async (req, res) => {
     try {
-      const { title } = req.body;
-
-      const newProject = new Project({
-        title,
-      });
-      await newProject.save();
-
-      res.json({ msg: "Created project" });
+      res.json({ msg: "Deleted project" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
