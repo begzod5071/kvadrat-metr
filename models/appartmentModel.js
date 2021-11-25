@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const roomSchema = new mongoose.Schema({
+const appartmentSchema = new mongoose.Schema({
   projectId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
@@ -28,4 +28,4 @@ const roomSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Rooms", roomSchema);
+module.exports = mongoose.model("Appartments", appartmentSchema);

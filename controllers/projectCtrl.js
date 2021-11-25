@@ -65,25 +65,33 @@ const projectCtrl = {
       });
       await newProject.save();
 
-      res.json({ msg: "Created project" });
+      res.json({ message: "Created project" });
     } catch (err) {
-      return res.status(500).json({ msg: err.message });
+      if (err.name === "ValidationError") return res.status(400).json({ err });
+
+      return res.error.serverErr(res);
     }
   },
   updateProject: async (req, res) => {
     try {
-      const { title } = req.body;
+      const project = await Project.findByIdAndUpdate(req.params.id, req.body);
+      if (!project) return res.error.projectNotFound(res);
 
-      res.json({ msg: "Updated project" });
+      res.json({ message: "Updated project" });
     } catch (err) {
-      return res.status(500).json({ msg: err.message });
+      if (err.name === "ValidationError") return res.status(400).json({ err });
+
+      return res.error.serverErr(res);
     }
   },
   deleteProject: async (req, res) => {
     try {
-      res.json({ msg: "Deleted project" });
+      const project = await Project.findByIdAndDelete(req.params.id);
+      if (!project) return res.error.projectNotFound(res);
+
+      res.json({ message: "Deleted project" });
     } catch (err) {
-      return res.status(500).json({ msg: err.message });
+      return res.error.serverErr(res);
     }
   },
 };

@@ -6,6 +6,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const fileUpload = require("express-fileupload");
 const cors = require("cors");
+const errorModifier = require("./middlewares/errorModifier");
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(
     useTempFiles: true,
   })
 );
+app.use(errorModifier);
 
 // Routes
 app.use("/", require("./routes/projectRouter"));
