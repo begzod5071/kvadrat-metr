@@ -63,6 +63,22 @@ const errorModifier = (req, res, next) => {
         },
       });
     },
+    invalidUploadImage: async (res) => {
+      res.status(400).json({
+        err: {
+          name: "InvalidUploadImage",
+          message: "No Upload Image is required",
+        },
+      });
+    },
+    appartmentNotFound: async (res) => {
+      res.status(400).json({
+        err: {
+          name: "AppartmentNotFound",
+          message: "Appartment is not exist.",
+        },
+      });
+    },
   };
 
   res.error = error;
