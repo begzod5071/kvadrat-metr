@@ -7,7 +7,7 @@ const projectCtrl = {
 
       res.json({ projects });
     } catch (err) {
-      return res.status(500).json({ msg: err.message });
+      return res.error.serverErr(res);
     }
   },
   createProject: async (req, res) => {
@@ -67,9 +67,7 @@ const projectCtrl = {
 
       res.json({ message: "Created project" });
     } catch (err) {
-      if (err.name === "ValidationError") return res.status(400).json({ err });
-
-      return res.error.serverErr(res);
+      return res.error.handleError(res, err);
     }
   },
   updateProject: async (req, res) => {
@@ -79,9 +77,7 @@ const projectCtrl = {
 
       res.json({ message: "Updated project" });
     } catch (err) {
-      if (err.name === "ValidationError") return res.status(400).json({ err });
-
-      return res.error.serverErr(res);
+      return res.error.handleError(res, err);
     }
   },
   deleteProject: async (req, res) => {
@@ -91,7 +87,7 @@ const projectCtrl = {
 
       res.json({ message: "Deleted project" });
     } catch (err) {
-      return res.error.serverErr(res);
+      return res.error.handleError(res, err);
     }
   },
 };
