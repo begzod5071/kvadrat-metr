@@ -12,10 +12,56 @@ const projectCtrl = {
   },
   createProject: async (req, res) => {
     try {
-      const { title } = req.body;
+      const {
+        name,
+        floorFrom,
+        floorTo,
+        areaFrom,
+        areaTo,
+        roomsFrom,
+        roomsTo,
+        repair,
+        parking,
+        isActive,
+        year,
+        address,
+        landmark,
+        map,
+        images,
+        infoUz,
+        infoRu,
+        infoEn,
+      } = req.body;
 
       const newProject = new Project({
-        title,
+        name,
+        floor: {
+          from: floorFrom,
+          to: floorTo,
+        },
+        area: {
+          from: areaFrom,
+          to: areaTo,
+        },
+        rooms: {
+          from: roomsFrom,
+          to: roomsTo,
+        },
+        repair,
+        parking,
+        isActive,
+        year,
+        location: {
+          address,
+          landmark,
+          map,
+        },
+        images,
+        info: {
+          uz: infoUz,
+          ru: infoRu,
+          en: infoEn,
+        },
       });
       await newProject.save();
 
