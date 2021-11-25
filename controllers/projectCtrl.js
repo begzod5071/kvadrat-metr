@@ -7,7 +7,7 @@ const projectCtrl = {
 
       res.json({ projects });
     } catch (err) {
-      return res.error.serverErr(res);
+      return res.error.serverErr(res, err);
     }
   },
   createProject: async (req, res) => {

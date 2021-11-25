@@ -25,6 +25,7 @@ app.use(errorModifier);
 
 // Routes
 app.use("/", require("./routes/projectRouter"));
+app.use("/", require("./routes/upload"));
 
 const start = async () => {
   try {

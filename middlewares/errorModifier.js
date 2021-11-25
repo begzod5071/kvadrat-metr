@@ -1,10 +1,10 @@
 const errorModifier = (req, res, next) => {
   const error = {
-    serverErr: async (res) => {
+    serverErr: async (res, err) => {
       res.status(500).json({
         err: {
           name: "ServerErr",
-          message: "International server error",
+          message: `International server error: ${err.message}`,
         },
       });
     },
@@ -26,10 +26,42 @@ const errorModifier = (req, res, next) => {
           return res.status(500).json({
             err: {
               name: "ServerErr",
-              message: "International server error",
+              message: `International server error: ${err.message}`,
             },
           });
       }
+    },
+    noUpload: async (res) => {
+      res.status(400).json({
+        err: {
+          name: "NoUpload",
+          message: "No upload file",
+        },
+      });
+    },
+    invalidSize: async (res) => {
+      res.status(400).json({
+        err: {
+          name: "InvalidSize",
+          message: "File large",
+        },
+      });
+    },
+    invalidType: async (res) => {
+      res.status(400).json({
+        err: {
+          name: "InvalidType",
+          message: "File format png or jpeg",
+        },
+      });
+    },
+    invalidPublicId: async (res) => {
+      res.status(400).json({
+        err: {
+          name: "InvalidPublicId",
+          message: "No checked image",
+        },
+      });
     },
   };
 
