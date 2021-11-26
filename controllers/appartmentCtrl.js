@@ -1,14 +1,25 @@
 const Appartment = require("../models/appartmentModel");
 const Project = require("../models/projectModel");
+const Lead = require("../models/leadModel");
 
 const appartmentCtrl = {
   getAppartment: async (req, res) => {
     try {
       const appartments = await Appartment.find({});
 
-      res.json({ appartments });
+      const newAppartment = await Promise.all(
+        appartments.map(async (appartment) => {
+          const leads = await Lead.find({ appartmentId: appartment._id });
+
+          appartment.leads = leads;
+
+          return appartment;
+        })
+      );
+
+      res.json({ appartments: newAppartment });
     } catch (err) {
-      return res.status(500).json({ msg: err.message });
+      return res.error.serverErr(res, err);
     }
   },
   postAppartment: async (req, res) => {
@@ -32,7 +43,7 @@ const appartmentCtrl = {
 
       res.json({ message: "Created appartment" });
     } catch (err) {
-      return res.error.handleError(res);
+      return res.error.handleError(res, err);
     }
   },
   updateAppartment: async (req, res) => {
@@ -49,7 +60,7 @@ const appartmentCtrl = {
         message: "appartment updated",
       });
     } catch (err) {
-      return res.error.handleError(res);
+      return res.error.handleError(res, err);
     }
   },
   deleteAppartment: async (req, res) => {
@@ -62,7 +73,7 @@ const appartmentCtrl = {
         message: "appartment deleted",
       });
     } catch (err) {
-      return res.error.handleError(res);
+      return res.error.handleError(res, err);
     }
   },
 };

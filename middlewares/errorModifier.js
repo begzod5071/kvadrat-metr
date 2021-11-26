@@ -79,6 +79,14 @@ const errorModifier = (req, res, next) => {
         },
       });
     },
+    leadNotFound: async (res) => {
+      res.status(400).json({
+        err: {
+          name: "LeadNotFound",
+          message: "Lead is not exist.",
+        },
+      });
+    },
   };
 
   res.error = error;

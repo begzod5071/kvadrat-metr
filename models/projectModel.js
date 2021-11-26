@@ -96,6 +96,10 @@ const projectSchema = new mongoose.Schema(
         default: null,
       },
     },
+    appartments: {
+      type: Array,
+      default: [],
+    },
   },
   {
     timestamps: true,

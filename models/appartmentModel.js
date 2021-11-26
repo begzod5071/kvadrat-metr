@@ -27,6 +27,10 @@ const appartmentSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    leads: {
+      type: Array,
+      default: [],
+    },
   },
   {
     timestamps: true,
