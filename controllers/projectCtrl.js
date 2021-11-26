@@ -28,7 +28,11 @@ const projectCtrl = {
         })
       );
 
-      res.json({ projects: newProjects });
+      res.json({
+        status: "OK",
+        length: newProjects.length,
+        projects: newProjects,
+      });
     } catch (err) {
       return res.error.serverErr(res, err);
     }

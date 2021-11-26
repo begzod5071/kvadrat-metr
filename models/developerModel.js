@@ -75,6 +75,10 @@ const developerSchema = new mongoose.Schema({
       required: true,
     },
   },
+  projects: {
+    type: Array,
+    default: [],
+  },
 });
 
 module.exports = mongoose.model("Developers", developerSchema);

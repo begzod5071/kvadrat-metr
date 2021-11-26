@@ -8,6 +8,7 @@ router
 
 router
   .route("/developers/:id")
+  .get(developerCtrl.getDeveloper)
   .put(developerCtrl.updateDeveloper)
   .delete(developerCtrl.deleteDeveloper);
 

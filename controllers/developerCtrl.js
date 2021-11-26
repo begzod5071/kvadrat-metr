@@ -8,7 +8,21 @@ const developerCtrl = {
     try {
       const developers = await Developer.find({});
 
-      res.json({ developers });
+      res.json({
+        status: "OK",
+        length: developers.length,
+        developers,
+      });
+    } catch (err) {
+      return res.error.serverErr(res, err);
+    }
+  },
+  getDeveloper: async (req, res) => {
+    try {
+      const developer = await Developer.findById(req.params.id);
+      if (!developer) return res.error.developerNotFound(res);
+
+      res.json(developer);
     } catch (err) {
       return res.error.serverErr(res, err);
     }
@@ -68,7 +82,7 @@ const developerCtrl = {
   },
   deleteDeveloper: async (req, res) => {
     try {
-      const developer = await Developer.findByIdAndDelete(req.params.id);
+      const developer = await Developer.findById(req.params.id);
       if (!developer) return res.error.developerNotFound(res);
 
       const projects = await Project.find({ developerId: developer._id });

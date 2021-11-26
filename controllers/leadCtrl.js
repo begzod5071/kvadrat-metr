@@ -6,7 +6,7 @@ const leadCtrl = {
     try {
       const leads = await Lead.find({});
 
-      res.json({ leads });
+      res.json({ status: "OK", length: leads.length, leads });
     } catch (err) {
       return res.error.serverErr(res, err);
     }

@@ -17,7 +17,11 @@ const appartmentCtrl = {
         })
       );
 
-      res.json({ appartments: newAppartment });
+      res.json({
+        status: "OK",
+        length: newAppartment.length,
+        appartments: newAppartment,
+      });
     } catch (err) {
       return res.error.serverErr(res, err);
     }
