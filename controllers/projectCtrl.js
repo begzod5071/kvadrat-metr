@@ -87,7 +87,7 @@ const projectCtrl = {
       });
       await newProject.save();
 
-      res.json({ message: "Created project" });
+      res.status(201).json({ message: "Created project" });
     } catch (err) {
       return res.error.handleError(res, err);
     }

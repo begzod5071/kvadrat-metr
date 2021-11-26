@@ -26,7 +26,7 @@ const leadCtrl = {
       });
       await newLead.save();
 
-      res.json({ message: "Created lead" });
+      res.status(201).json({ message: "Created lead" });
     } catch (err) {
       return res.error.handleError(res, err);
     }

@@ -41,7 +41,7 @@ const appartmentCtrl = {
       });
       await newAppartment.save();
 
-      res.json({ message: "Created appartment" });
+      res.status(201).json({ message: "Created appartment" });
     } catch (err) {
       return res.error.handleError(res, err);
     }
