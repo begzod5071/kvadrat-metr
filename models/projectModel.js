@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 
 const projectSchema = new mongoose.Schema(
   {
+    developerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "Developer",
+    },
     name: {
       type: String,
       required: true,

@@ -1,6 +1,7 @@
 const Project = require("../models/projectModel");
 const Appartment = require("../models/appartmentModel");
 const Lead = require("../models/leadModel");
+const Developer = require("../models/developerModel");
 
 const projectCtrl = {
   getProjects: async (req, res) => {
@@ -35,6 +36,7 @@ const projectCtrl = {
   createProject: async (req, res) => {
     try {
       const {
+        developerId,
         name,
         floorFrom,
         floorTo,
@@ -55,7 +57,11 @@ const projectCtrl = {
         infoEn,
       } = req.body;
 
+      const developer = await Developer.findById(developerId);
+      if (!developer) return res.error.developerNotFound(res);
+
       const newProject = new Project({
+        developerId,
         name,
         floor: {
           from: floorFrom,

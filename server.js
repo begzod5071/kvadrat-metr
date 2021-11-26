@@ -27,6 +27,7 @@ app.use(errorModifier);
 // Routes
 app.use("/", require("./routes/projectRouter"));
 app.use("/", require("./routes/upload"));
+app.use("/", require("./routes/developerRouter"));
 app.use("/", require("./routes/appartmentRouter"));
 app.use("/", require("./routes/leadRouter"));
 

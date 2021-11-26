@@ -87,6 +87,14 @@ const errorModifier = (req, res, next) => {
         },
       });
     },
+    developerNotFound: async (res) => {
+      res.status(400).json({
+        err: {
+          name: "DeveloperNotFound",
+          message: "Developer is not exist.",
+        },
+      });
+    },
   };
 
   res.error = error;
