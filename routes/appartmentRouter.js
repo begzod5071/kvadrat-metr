@@ -3,7 +3,7 @@ const appartment = require("../controllers/appartmentCtrl");
 
 router
   .route("/appartments")
-  .get(appartment.getAppartment)
+  .get(appartment.getAppartments)
   .post(appartment.postAppartment);
 
 router
