@@ -25,7 +25,7 @@ const appartmentCtrl = {
     } catch (err) {
       return res.error.serverErr(res, err);
     }
-  },
+  },  
   postAppartment: async (req, res) => {
     try {
       const { projectId, room, image, area, bathroom, price } = req.body;
