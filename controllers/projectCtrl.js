@@ -118,19 +118,14 @@ const projectCtrl = {
       if (!project) return res.error.projectNotFound(res);
 
       const appartments = await Appartment.find({ projectId: project._id });
+
       await Promise.all(
         appartments.map(async (appartment) => {
-          const leads = await Lead.find({ appartmentId: appartment._id });
-
-          await Promise.all(
-            leads.map(async (lead) => {
-              await Lead.findByIdAndDelete(lead._id);
-            })
-          );
-
-          await Appartment.findByIdAndDelete(appartment._id);
+          await Lead.remove({ appartmentId: appartment._id }, { $multi: true });
         })
       );
+
+      await Appartment.remove({ projectId: project._id }, { $multi: true });
 
       await Project.findByIdAndDelete(project._id);
 

@@ -69,13 +69,14 @@ const appartmentCtrl = {
   },
   deleteAppartment: async (req, res) => {
     try {
-      const appartmentId = req.params.id;
-
-      const appartment = await Appartment.findByIdAndDelete(appartmentId);
+      const appartment = await Appartment.findById(req.params.id);
       if (!appartment) return res.error.appartmentNotFound(res);
-      res.json({
-        message: "appartment deleted",
-      });
+
+      await Lead.remove({ appartmentId: appartment._id }, { $multi: true });
+
+      await Appartment.findByIdAndDelete(appartment._id);
+
+      res.json({ message: "Appartment deleted" });
     } catch (err) {
       return res.error.handleError(res, err);
     }
