@@ -3,7 +3,7 @@ const Project = require("../models/projectModel");
 const Lead = require("../models/leadModel");
 
 const appartmentCtrl = {
-  getAppartment: async (req, res) => {
+  getAppartments: async (req, res) => {
     try {
       const appartments = await Appartment.find({});
 

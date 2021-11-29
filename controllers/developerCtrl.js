@@ -8,10 +8,44 @@ const developerCtrl = {
     try {
       const developers = await Developer.find({});
 
+      const newDevelopers = await Promise.all(
+        developers.map(async (developer) => {
+          const projects = await Project.find({ developerId: developer._id });
+
+          const newProjects = await Promise.all(
+            projects.map(async (project) => {
+              const appartments = await Appartment.find({
+                projectId: project._id,
+              });
+
+              const newAppartments = await Promise.all(
+                appartments.map(async (appartment) => {
+                  const leads = await Lead.find({
+                    appartmentId: appartment._id,
+                  });
+
+                  appartment.leads = leads;
+
+                  return appartment;
+                })
+              );
+
+              project.appartments = newAppartments;
+
+              return project;
+            })
+          );
+
+          developer.projects = newProjects;
+
+          return developer;
+        })
+      );
+
       res.json({
         status: "OK",
-        length: developers.length,
-        developers,
+        length: newDevelopers.length,
+        developers: newDevelopers,
       });
     } catch (err) {
       return res.error.serverErr(res, err);
@@ -21,6 +55,34 @@ const developerCtrl = {
     try {
       const developer = await Developer.findById(req.params.id);
       if (!developer) return res.error.developerNotFound(res);
+
+      const projects = await Project.find({ developerId: developer._id });
+
+      const newProjects = await Promise.all(
+        projects.map(async (project) => {
+          const appartments = await Appartment.find({
+            projectId: project._id,
+          });
+
+          const newAppartments = await Promise.all(
+            appartments.map(async (appartment) => {
+              const leads = await Lead.find({
+                appartmentId: appartment._id,
+              });
+
+              appartment.leads = leads;
+
+              return appartment;
+            })
+          );
+
+          project.appartments = newAppartments;
+
+          return project;
+        })
+      );
+
+      developer.projects = newProjects;
 
       res.json(developer);
     } catch (err) {
