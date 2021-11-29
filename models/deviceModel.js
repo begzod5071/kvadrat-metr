@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const deviceSchema = new mongoose.Schema(
   {  
-    apartmentId: {
+    appartmentId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true
     }, 
@@ -13,6 +13,10 @@ const deviceSchema = new mongoose.Schema(
     event: {
       type: String,
       enum: ['click', 'view']
+    },
+    date: {
+      type: Date,
+      default: Date.now()
     }    
   },
   {

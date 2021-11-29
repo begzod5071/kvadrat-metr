@@ -1,6 +1,7 @@
 const Appartment = require("../models/appartmentModel");
 const Project = require("../models/projectModel");
 const Lead = require("../models/leadModel");
+const Device = require("../models/deviceModel")
 
 const appartmentCtrl = {
   getAppartments: async (req, res) => {
@@ -24,6 +25,28 @@ const appartmentCtrl = {
       });
     } catch (err) {
       return res.error.serverErr(res, err);
+    }
+  },
+  postView: async (req, res) => {
+    try {
+      const {appartmentId, deviceId, event} = req.body
+
+      const appartment = await Appartment.findById(appartmentId)
+      if (!appartment) return res.error.appartmentNotFound(res)
+
+      const device = await Device.find({appartmentId, deviceId, event})
+
+      if(device.length !== 0) 
+        return res.json({message:"oldin ko'rilgan"})
+      
+      const newDevice = new Device({appartmentId, deviceId, event})
+      await newDevice.save()
+
+      await Appartment.findByIdAndUpdate(appartmentId, {[event]: appartment[event] + 1})
+
+      res.json({message:'created'})
+    } catch (err) {
+      return res.error.handleError(res, err)
     }
   },  
   postAppartment: async (req, res) => {

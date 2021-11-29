@@ -31,6 +31,14 @@ const appartmentSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
+    click: {
+      type: Number,
+      default: 0,
+    },
+    view: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,
