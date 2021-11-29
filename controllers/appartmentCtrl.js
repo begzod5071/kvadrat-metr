@@ -38,6 +38,10 @@ const appartmentCtrl = {
 
       if(device.length !== 0) 
         return res.json({message:"oldin ko'rilgan"})
+
+      const dayAgo = new Date(new Date() - 24 * 60 * 60 * 1000);
+
+      await Device.remove({$lte: {createdAt: dayAgo}}, { $multi: true })
       
       const newDevice = new Device({appartmentId, deviceId, event})
       await newDevice.save()

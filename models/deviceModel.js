@@ -13,11 +13,7 @@ const deviceSchema = new mongoose.Schema(
     event: {
       type: String,
       enum: ['click', 'view']
-    },
-    date: {
-      type: Date,
-      default: Date.now()
-    }    
+    }, 
   },
   {
     timestamps: true,
