@@ -30,6 +30,7 @@ app.use("/", require("./routes/upload"));
 app.use("/", require("./routes/developerRouter"));
 app.use("/", require("./routes/appartmentRouter"));
 app.use("/", require("./routes/leadRouter"));
+app.use("/", require("./routes/filterRouter"));
 
 const start = async () => {
   try {
