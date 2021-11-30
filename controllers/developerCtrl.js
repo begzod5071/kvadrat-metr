@@ -153,16 +153,13 @@ const developerCtrl = {
           const appartments = await Appartment.find({ projectId: project._id });
           await Promise.all(
             appartments.map(async (appartment) => {
-              await Lead.remove(
-                { appartmentId: appartment._id },
-                { $multi: true }
-              );
+              await Lead.deleteMany({ appartmentId: appartment._id });
             })
           );
-          await Appartment.remove({ projectId: project._id }, { $multi: true });
+          await Appartment.deleteMany({ projectId: project._id });
         })
       );
-      await Project.remove({ developerId: developer._id }, { $multi: true });
+      await Project.deleteMany({ developerId: developer._id });
 
       await Developer.findByIdAndDelete(developer._id);
 

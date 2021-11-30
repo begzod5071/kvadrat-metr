@@ -27,6 +27,20 @@ const appartmentCtrl = {
       return res.error.serverErr(res, err);
     }
   },
+  getAppartment: async (req, res) => {
+    try {
+      const appartment = await Appartment.findById(req.params.id);
+      if (!appartment) return res.error.appartmentNotFound(res);
+
+      const leads = await Lead.find({ appartmentId: appartment._id });
+
+      appartment.leads = leads;
+
+      res.json(appartment);
+    } catch (err) {
+      return res.error.serverErr(res, err);
+    }
+  },
   postView: async (req, res) => {
     try {
       const { appartmentId, deviceId, event } = req.body;
@@ -34,7 +48,7 @@ const appartmentCtrl = {
       const appartment = await Appartment.findById(appartmentId);
       if (!appartment) return res.error.appartmentNotFound(res);
 
-      const dayAgo = new Date(new Date() - 10 * 1000);
+      const dayAgo = new Date(new Date() - 12 * 60 * 60 * 1000);
 
       await Device.deleteMany({ createdAt: { $lte: dayAgo } });
 
@@ -100,7 +114,7 @@ const appartmentCtrl = {
       const appartment = await Appartment.findById(req.params.id);
       if (!appartment) return res.error.appartmentNotFound(res);
 
-      await Lead.remove({ appartmentId: appartment._id }, { $multi: true });
+      await Lead.deleteMany({ appartmentId: appartment._id });
 
       await Appartment.findByIdAndDelete(appartment._id);
 

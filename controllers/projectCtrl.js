@@ -121,11 +121,11 @@ const projectCtrl = {
 
       await Promise.all(
         appartments.map(async (appartment) => {
-          await Lead.remove({ appartmentId: appartment._id }, { $multi: true });
+          await Lead.deleteMany({ appartmentId: appartment._id });
         })
       );
 
-      await Appartment.remove({ projectId: project._id }, { $multi: true });
+      await Appartment.deleteMany({ projectId: project._id });
 
       await Project.findByIdAndDelete(project._id);
 
