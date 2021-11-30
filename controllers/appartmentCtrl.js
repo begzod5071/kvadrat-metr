@@ -1,7 +1,7 @@
 const Appartment = require("../models/appartmentModel");
 const Project = require("../models/projectModel");
 const Lead = require("../models/leadModel");
-const Device = require("../models/deviceModel")
+const Device = require("../models/deviceModel");
 
 const appartmentCtrl = {
   getAppartments: async (req, res) => {
@@ -29,30 +29,31 @@ const appartmentCtrl = {
   },
   postView: async (req, res) => {
     try {
-      const {appartmentId, deviceId, event} = req.body
+      const { appartmentId, deviceId, event } = req.body;
 
-      const appartment = await Appartment.findById(appartmentId)
-      if (!appartment) return res.error.appartmentNotFound(res)
+      const appartment = await Appartment.findById(appartmentId);
+      if (!appartment) return res.error.appartmentNotFound(res);
 
-      const device = await Device.find({appartmentId, deviceId, event})
+      const dayAgo = new Date(new Date() - 10 * 1000);
 
-      if(device.length !== 0) 
-        return res.json({message:"oldin ko'rilgan"})
+      await Device.deleteMany({ createdAt: { $lte: dayAgo } });
 
-      const dayAgo = new Date(new Date() - 24 * 60 * 60 * 1000);
+      const device = await Device.find({ appartmentId, deviceId, event });
 
-      await Device.remove({$lte: {createdAt: dayAgo}}, { $multi: true })
-      
-      const newDevice = new Device({appartmentId, deviceId, event})
-      await newDevice.save()
+      if (device.length !== 0) return res.json({ message: "oldin ko'rilgan" });
 
-      await Appartment.findByIdAndUpdate(appartmentId, {[event]: appartment[event] + 1})
+      const newDevice = new Device({ appartmentId, deviceId, event });
+      await newDevice.save();
 
-      res.json({message:'created'})
+      await Appartment.findByIdAndUpdate(appartmentId, {
+        [event]: appartment[event] + 1,
+      });
+
+      res.json({ message: "created" });
     } catch (err) {
-      return res.error.handleError(res, err)
+      return res.error.handleError(res, err);
     }
-  },  
+  },
   postAppartment: async (req, res) => {
     try {
       const { projectId, room, image, area, bathroom, price } = req.body;
