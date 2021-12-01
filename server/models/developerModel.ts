@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { IDeveloper } from "../config/interfaces";
 
 const developerSchema = new mongoose.Schema({
   name: {
@@ -97,4 +98,4 @@ const developerSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.model("Developers", developerSchema);
+export default mongoose.model<IDeveloper>("Developers", developerSchema);
