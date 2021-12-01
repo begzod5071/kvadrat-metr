@@ -5,8 +5,4 @@ const router = express.Router();
 
 router.use("/", developerRouter);
 
-router.get("*", (req: Request, res: Response) => {
-  res.json({ message: "Not found" });
-});
-
 export default router;
