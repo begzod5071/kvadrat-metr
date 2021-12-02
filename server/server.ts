@@ -1,11 +1,12 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import express from "express";
+import express, { NextFunction, Request } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import fileUpload from "express-fileupload";
 import routes from "./routes/index";
+import errorHandler from "./middlewares/errorHandler";
 
 const app = express();
 
@@ -19,6 +20,9 @@ app.use(
     useTempFiles: true,
   })
 );
+
+// Errors handler
+app.use(errorHandler);
 
 // Routes
 app.use("/api", routes);

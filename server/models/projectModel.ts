@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { IProject } from "../config/interfaces";
 
 const projectSchema = new mongoose.Schema(
   {
@@ -111,4 +112,4 @@ const projectSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model("Projects", projectSchema);
+export default mongoose.model<IProject>("Projects", projectSchema);

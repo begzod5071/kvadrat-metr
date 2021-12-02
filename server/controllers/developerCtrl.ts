@@ -6,7 +6,7 @@ const developerCtrl = {
     try {
       res.json({ message: "Developer get" });
     } catch (err: any) {
-      res.status(500).json({ message: "Server error" });
+      throw new Error("Server error");
     }
   },
 };
