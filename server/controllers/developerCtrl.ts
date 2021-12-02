@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Developer from "../models/developerModel";
+import { IDeveloper } from "../config/interfaces";
 
 const developerCtrl = {
   getDeveloper: async (req: Request, res: Response) => {
