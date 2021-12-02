@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import Appartment from "../models/appartmentModel";
-const Project = require("../models/projectModel");
-const Lead = require("../models/leadModel");
-const Device = require("../models/deviceModel");
+import Project from "../models/projectModel";
+import Lead from "../models/leadModel";
+import Device from "../models/deviceModel";
+import { IAppartment } from "../config/interfaces";
 
 const appartmentCtrl = {
   getAppartments: async (req: Request, res: Response) => {
@@ -10,7 +11,7 @@ const appartmentCtrl = {
       const appartments: object[] = await Appartment.find({});
 
       const newAppartment = await Promise.all(
-        appartments.map(async (appartment: object) => {
+        appartments.map(async (appartment: IAppartment) => {
           const leads: object[] = await Lead.find({ appartmentId: appartment._id });
 
           appartment.leads = leads;

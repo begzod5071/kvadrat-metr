@@ -51,3 +51,22 @@ export interface IProject extends Document {
   };
   appartments: object[];
 }
+
+export interface IAppartment {
+  _id: string;
+  projectId: string;
+  image: {
+    url: string;
+    public_id: string;
+  };
+  room: number;
+  area: number;
+  bathroom: number;
+  price: number;
+  leads: object[];
+  click: number;
+  view: number;
+  __v: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
