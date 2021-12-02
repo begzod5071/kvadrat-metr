@@ -2,10 +2,10 @@ import { Request, Response } from "express";
 import Project from "../models/projectModel";
 import Lead from "../models/leadModel";
 import Developer from "../models/developerModel";
-import { IProject } from "../config/interfaces";
+import { IProject, IResponse } from "../config/interfaces";
 
 const projectCtrl = {
-  getProjects: async (req: Request, res: Response) => {
+  getProjects: async (req: Request, res: IResponse) => {
     try {
       res.error.serverError(res);
     } catch (err: any) {

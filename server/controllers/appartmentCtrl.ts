@@ -3,12 +3,12 @@ import Appartment from "../models/appartmentModel";
 import Project from "../models/projectModel";
 import Lead from "../models/leadModel";
 import Device from "../models/deviceModel";
-import { IAppartment } from "../config/interfaces";
+import { IAppartment, IResponse } from "../config/interfaces";
 
 const appartmentCtrl = {
-  getAppartments: async (req: Request, res: Response) => {
+  getAppartments: async (req: Request, res: IResponse) => {
     try {
-      const appartments: object[] = await Appartment.find({});
+      const appartments: IAppartment[] = await Appartment.find({});
 
       const newAppartment = await Promise.all(
         appartments.map(async (appartment: IAppartment) => {
@@ -29,7 +29,7 @@ const appartmentCtrl = {
       return res.error.serverErr(res, err);
     }
   },
-  getAppartment: async (req: Request, res: Response) => {
+  getAppartment: async (req: Request, res: IResponse) => {
     try {
       const appartment: object = await Appartment.findById(req.params.id);
       if (!appartment) return res.error.appartmentNotFound(res);
@@ -43,7 +43,7 @@ const appartmentCtrl = {
       return res.error.serverErr(res, err);
     }
   },
-  postView: async (req: Request, res: Response) => {
+  postView: async (req: Request, res: IResponse) => {
     try {
       const { appartmentId, deviceId, event } = req.body;
 
@@ -70,7 +70,7 @@ const appartmentCtrl = {
       return res.error.handleError(res, err);
     }
   },
-  postAppartment: async (req: Request, res: Response) => {
+  postAppartment: async (req: Request, res: IResponse) => {
     try {
       const { projectId, room, image, area, bathroom, price } = req.body;
 
@@ -94,7 +94,7 @@ const appartmentCtrl = {
       return res.error.handleError(res, err);
     }
   },
-  updateAppartment: async (req: Request, res: Response) => {
+  updateAppartment: async (req: Request, res: IResponse) => {
     try {
       const appartmentId = req.params.id;
 
@@ -111,7 +111,7 @@ const appartmentCtrl = {
       return res.error.handleError(res, err);
     }
   },
-  deleteAppartment: async (req: Request, res: Response) => {
+  deleteAppartment: async (req: Request, res: IResponse) => {
     try {
       const appartment = await Appartment.findById(req.params.id);
       if (!appartment) return res.error.appartmentNotFound(res);
