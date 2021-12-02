@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request } from "express";
 import Project from "../models/projectModel";
 import Lead from "../models/leadModel";
 import Developer from "../models/developerModel";

@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import Lead from "../models/leadModel";
 import Appartment from "../models/appartmentModel";
+import { IResponse } from "../config/interfaces";
 
 const leadCtrl = {
-  getLeads: async (req: Request, res: Response) => {
+  getLeads: async (req: Request, res: IResponse) => {
     try {
       const leads = await Lead.find({});
 
@@ -12,7 +13,7 @@ const leadCtrl = {
       return res.error.serverErr(res, err);
     }
   },
-  createLead: async (req: Request, res: Response) => {
+  createLead: async (req: Request, res: IResponse) => {
     try {
       const { appartmentId, name, comment, phone } = req.body;
 
@@ -32,7 +33,7 @@ const leadCtrl = {
       return res.error.handleError(res, err);
     }
   },
-  updateLead: async (req: Request, res: Response) => {
+  updateLead: async (req: Request, res: IResponse) => {
     try {
       const lead: object = await Lead.findByIdAndUpdate(
         req.params.id,
@@ -45,7 +46,7 @@ const leadCtrl = {
       return res.error.handleError(res, err);
     }
   },
-  deleteLead: async (req: Request, res: Response) => {
+  deleteLead: async (req: Request, res: IResponse) => {
     try {
       const lead: object = await Lead.findByIdAndDelete(req.params.id);
       if (!lead) return res.error.leadNotFound(res);

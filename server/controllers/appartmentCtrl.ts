@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
+import { Request } from "express";
 import Appartment from "../models/appartmentModel";
 import Project from "../models/projectModel";
 import Lead from "../models/leadModel";
 import Device from "../models/deviceModel";
-import { IAppartment, IResponse } from "../config/interfaces";
+import { IResponse, IAppartment, ILead } from "../config/interfaces";
 
 const appartmentCtrl = {
   getAppartments: async (req: Request, res: IResponse) => {
@@ -12,7 +12,9 @@ const appartmentCtrl = {
 
       const newAppartment = await Promise.all(
         appartments.map(async (appartment: IAppartment) => {
-          const leads: object[] = await Lead.find({ appartmentId: appartment._id });
+          const leads: ILead[] = await Lead.find({
+            appartmentId: appartment._id,
+          });
 
           appartment.leads = leads;
 
