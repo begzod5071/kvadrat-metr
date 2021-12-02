@@ -2,7 +2,7 @@ import { Document } from "mongoose";
 import { Response, Request } from "express";
 
 export interface IResponse extends Response {
-  error: object;
+  error: any;
 }
 
 export interface IDeveloper extends Document {
