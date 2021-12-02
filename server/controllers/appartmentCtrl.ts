@@ -3,7 +3,7 @@ import Appartment from "../models/appartmentModel";
 import Project from "../models/projectModel";
 import Lead from "../models/leadModel";
 import Device from "../models/deviceModel";
-import { IResponse, IAppartment, ILead } from "../config/interfaces";
+import { IResponse, IAppartment, ILead, IProject } from "../config/interfaces";
 
 const appartmentCtrl = {
   getAppartments: async (req: Request, res: IResponse) => {
@@ -33,10 +33,10 @@ const appartmentCtrl = {
   },
   getAppartment: async (req: Request, res: IResponse) => {
     try {
-      const appartment: object = await Appartment.findById(req.params.id);
+      const appartment: IAppartment = await Appartment.findById(req.params.id);
       if (!appartment) return res.error.appartmentNotFound(res);
 
-      const leads = await Lead.find({ appartmentId: appartment._id });
+      const leads: ILead[] = await Lead.find({ appartmentId: appartment._id });
 
       appartment.leads = leads;
 
@@ -49,10 +49,12 @@ const appartmentCtrl = {
     try {
       const { appartmentId, deviceId, event } = req.body;
 
-      const appartment: object[] = await Appartment.findById(appartmentId);
+      const appartment: IAppartment[] = await Appartment.findById(appartmentId);
       if (!appartment) return res.error.appartmentNotFound(res);
 
-      const dayAgo: Date = new Date(new Date() - 12 * 60 * 60 * 1000);
+      const currDate: number = new Date().getTime();
+
+      const dayAgo: Date = new Date(currDate - 12 * 60 * 60 * 1000);
 
       await Device.deleteMany({ createdAt: { $lte: dayAgo } });
 
@@ -63,11 +65,13 @@ const appartmentCtrl = {
       const newDevice = new Device({ appartmentId, deviceId, event });
       await newDevice.save();
 
+      const count: any = appartment[event];
+
       await Appartment.findByIdAndUpdate(appartmentId, {
-        [event]: appartment[event] + 1,
+        [event]: count + 1,
       });
 
-      res.json({ message: "created" });
+      res.json({ message: `Appartment is ${event}ed.` });
     } catch (err) {
       return res.error.handleError(res, err);
     }
@@ -100,14 +104,14 @@ const appartmentCtrl = {
     try {
       const appartmentId = req.params.id;
 
-      const appartment = await Appartment.findByIdAndUpdate(
+      const appartment: IAppartment = await Appartment.findByIdAndUpdate(
         appartmentId,
         req.body
       );
       if (!appartment) return res.error.appartmentNotFound(res);
 
       res.json({
-        message: "appartment updated",
+        message: "Appartment is updated",
       });
     } catch (err) {
       return res.error.handleError(res, err);
@@ -115,7 +119,7 @@ const appartmentCtrl = {
   },
   deleteAppartment: async (req: Request, res: IResponse) => {
     try {
-      const appartment = await Appartment.findById(req.params.id);
+      const appartment: IAppartment = await Appartment.findById(req.params.id);
       if (!appartment) return res.error.appartmentNotFound(res);
 
       await Lead.deleteMany({ appartmentId: appartment._id });

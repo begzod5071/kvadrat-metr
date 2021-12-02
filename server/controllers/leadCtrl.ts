@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import Lead from "../models/leadModel";
 import Appartment from "../models/appartmentModel";
-import { IResponse } from "../config/interfaces";
+import { IAppartment, ILead, IResponse } from "../config/interfaces";
 
 const leadCtrl = {
   getLeads: async (req: Request, res: IResponse) => {
@@ -17,10 +17,10 @@ const leadCtrl = {
     try {
       const { appartmentId, name, comment, phone } = req.body;
 
-      const appartment: object = await Appartment.findById(appartmentId);
+      const appartment: IAppartment = await Appartment.findById(appartmentId);
       if (!appartment) return res.error.appartmentNotFound(res);
 
-      const newLead: object = new Lead({
+      const newLead = new Lead({
         appartmentId,
         name,
         phone,
@@ -35,10 +35,7 @@ const leadCtrl = {
   },
   updateLead: async (req: Request, res: IResponse) => {
     try {
-      const lead: object = await Lead.findByIdAndUpdate(
-        req.params.id,
-        req.body
-      );
+      const lead: ILead = await Lead.findByIdAndUpdate(req.params.id, req.body);
       if (!lead) return res.error.leadNotFound(res);
 
       res.json({ message: "Updated lead" });
@@ -48,7 +45,7 @@ const leadCtrl = {
   },
   deleteLead: async (req: Request, res: IResponse) => {
     try {
-      const lead: object = await Lead.findByIdAndDelete(req.params.id);
+      const lead: ILead = await Lead.findByIdAndDelete(req.params.id);
       if (!lead) return res.error.leadNotFound(res);
 
       res.json({ message: "Deleted lead" });
