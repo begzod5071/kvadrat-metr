@@ -1,5 +1,5 @@
 import { Document } from "mongoose";
-import { Response, Request } from "express";
+import { Response } from "express";
 
 export interface IResponse extends Response {
   error: any;
@@ -7,66 +7,96 @@ export interface IResponse extends Response {
 
 export interface IDeveloper extends Document {
   name: string;
-  image: object;
-  info: object;
-  contact: object;
-  social: object;
-  location: object;
-  projects: [object];
+  image: IImage;
+  info: IInfo;
+  contact: IContact;
+  social: ISocial;
+  location: ILocation;
+  projects: IProject[];
 }
 
 export interface IProject extends Document {
   developerId: string;
   name: string;
-  floor: {
-    to: number;
-    from: number;
-  };
-  area: {
-    to: number;
-    from: number;
-  };
-  rooms: {
-    to: number;
-    from: number;
-  };
+  floor: IFromTo;
+  area: IFromTo;
+  rooms: IFromTo;
   repair: boolean;
   parking: boolean;
   isActive: boolean;
   year: number;
-  location: {
-    address: string;
-    landmark: string;
-    map: string;
-    region: string;
-  };
-  images: {
-    url: string;
-    public_id: string;
-  };
-  info: {
-    uz: string;
-    ru: string;
-    en: string;
-  };
-  appartments: object[];
+  location: IProjectLocation;
+  images: IImage[];
+  info: IInfo;
+  appartments: IAppartment[];
 }
 
-export interface IAppartment {
-  _id: string;
+export interface IAppartment extends Document {
   projectId: string;
-  image: {
-    url: string;
-    public_id: string;
-  };
-  room: number;
-  area: number;
+  image: IImage;
+  room: IFromTo;
+  area: IFromTo;
   bathroom: number;
   price: number;
-  leads: object[];
+  leads: ILead[];
   click: number;
   view: number;
-  __v: number;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface ILead extends Document {
+  projectId: string;
+  image: IImage;
+  room: IFromTo;
+  area: IFromTo;
+  bathroom: number;
+  price: number;
+  leads: ILead[];
+  click: number;
+  view: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface IImage {
+  url: string;
+  public_id: string;
+}
+
+export interface IFromTo {
+  from: number;
+  to: number;
+}
+
+export interface IInfo {
+  uz: string;
+  ru: string | null;
+  en: string | null;
+}
+
+export interface ILocation {
+  address: string;
+  landmark: string;
+  map: string;
+}
+
+export interface IProjectLocation extends ILocation {
+  region: string;
+}
+
+export interface ISocial {
+  facebook: string;
+  instagram: string;
+  tiktok: string;
+  telegram: string;
+  youtube: string;
+  twitter: string;
+}
+
+export interface IContact {
+  phone: string;
+  web: string;
+  email: string;
+  callCenter: string;
 }

@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import { IResponse } from "../config/interfaces";
 
-const errorHandler = (req: Request, res: IResponse, next: NextFunction) => {
+const errorHandler = (req: Request, res: any, next: NextFunction) => {
   const error: object = {
-    serverErr: async (res: IResponse, err: any) => {
+    serverErr: async (res: Response, err: any) => {
       res.status(500).json({
         err: {
           name: "ServerErr",
@@ -11,7 +11,7 @@ const errorHandler = (req: Request, res: IResponse, next: NextFunction) => {
         },
       });
     },
-    handleError: async (res: IResponse, err: any) => {
+    handleError: async (res: Response, err: any) => {
       switch (err.name) {
         case "ValidationError":
           return res.status(400).json({ err });
@@ -26,7 +26,7 @@ const errorHandler = (req: Request, res: IResponse, next: NextFunction) => {
           });
       }
     },
-    noUpload: async (res: IResponse) => {
+    noUpload: async (res: Response) => {
       res.status(400).json({
         err: {
           name: "NoUpload",
@@ -34,7 +34,7 @@ const errorHandler = (req: Request, res: IResponse, next: NextFunction) => {
         },
       });
     },
-    invalidSize: async (res: IResponse) => {
+    invalidSize: async (res: Response) => {
       res.status(400).json({
         err: {
           name: "InvalidSize",
@@ -42,7 +42,7 @@ const errorHandler = (req: Request, res: IResponse, next: NextFunction) => {
         },
       });
     },
-    invalidType: async (res: IResponse) => {
+    invalidType: async (res: Response) => {
       res.status(400).json({
         err: {
           name: "InvalidType",
@@ -50,7 +50,7 @@ const errorHandler = (req: Request, res: IResponse, next: NextFunction) => {
         },
       });
     },
-    invalidPublicId: async (res: IResponse) => {
+    invalidPublicId: async (res: Response) => {
       res.status(400).json({
         err: {
           name: "InvalidPublicId",
@@ -58,7 +58,7 @@ const errorHandler = (req: Request, res: IResponse, next: NextFunction) => {
         },
       });
     },
-    invalidUploadImage: async (res: IResponse) => {
+    invalidUploadImage: async (res: Response) => {
       res.status(400).json({
         err: {
           name: "InvalidUploadImage",
@@ -66,7 +66,7 @@ const errorHandler = (req: Request, res: IResponse, next: NextFunction) => {
         },
       });
     },
-    developerNotFound: async (res: IResponse) => {
+    developerNotFound: async (res: Response) => {
       res.status(400).json({
         err: {
           name: "DeveloperNotFound",
@@ -74,7 +74,7 @@ const errorHandler = (req: Request, res: IResponse, next: NextFunction) => {
         },
       });
     },
-    projectNotFound: async (res: IResponse) => {
+    projectNotFound: async (res: Response) => {
       res.status(400).json({
         err: {
           name: "ProjectNotFound",
@@ -82,7 +82,7 @@ const errorHandler = (req: Request, res: IResponse, next: NextFunction) => {
         },
       });
     },
-    appartmentNotFound: async (res: IResponse) => {
+    appartmentNotFound: async (res: Response) => {
       res.status(400).json({
         err: {
           name: "AppartmentNotFound",
@@ -90,7 +90,7 @@ const errorHandler = (req: Request, res: IResponse, next: NextFunction) => {
         },
       });
     },
-    leadNotFound: async (res: IResponse) => {
+    leadNotFound: async (res: Response) => {
       res.status(400).json({
         err: {
           name: "LeadNotFound",
