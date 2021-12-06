@@ -82,7 +82,7 @@ const errorHandler = (req: Request, res: any, next: NextFunction) => {
         },
       });
     },
-    appartmentNotFound: async (res: Response) => {
+    apartmentNotFound: async (res: Response) => {
       res.status(400).json({
         err: {
           name: "AppartmentNotFound",

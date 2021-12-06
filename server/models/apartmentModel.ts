@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const appartmentSchema = new mongoose.Schema(
+const apartmentSchema = new mongoose.Schema(
   {
     projectId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -45,4 +45,4 @@ const appartmentSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model("Appartments", appartmentSchema);
+export default mongoose.model("Apartments", apartmentSchema);

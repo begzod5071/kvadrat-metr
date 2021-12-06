@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import Lead from "../models/leadModel";
-import Appartment from "../models/appartmentModel";
-import { IAppartment, ILead, IResponse } from "../config/interfaces";
+import Apartment from "../models/apartmentModel";
+import { IApartment, ILead, IResponse } from "../config/interfaces";
 
 const leadCtrl = {
   getLeads: async (req: Request, res: IResponse) => {
@@ -15,13 +15,13 @@ const leadCtrl = {
   },
   createLead: async (req: Request, res: IResponse) => {
     try {
-      const { appartmentId, name, comment, phone } = req.body;
+      const { apartmentId, name, comment, phone } = req.body;
 
-      const appartment: IAppartment = await Appartment.findById(appartmentId);
-      if (!appartment) return res.error.appartmentNotFound(res);
+      const apartment: IApartment = await Apartment.findById(apartmentId);
+      if (!apartment) return res.error.apartmentNotFound(res);
 
       const newLead = new Lead({
-        appartmentId,
+        apartmentId,
         name,
         phone,
         comment,

@@ -1,27 +1,32 @@
 import { Response, Request } from "express";
 import Developer from "../models/developerModel";
 import Project from "../models/projectModel";
-import Appartment from "../models/appartmentModel";
+import Apartment from "../models/apartmentModel";
 import Lead from "../models/leadModel";
+import { IProject, IApartment, IResponse } from "../config/interfaces";
 
-const filterCtrl: object = {
-  getFilter: async (req: Request, res: Response) => {
+const filterCtrl = {
+  getFilter: async (req: Request, res: IResponse) => {
     try {
-      const { district, room, develover, priceFrom, priceTo } = req.params;
+      const { room } = req.query;
+      console.log(room);
 
-      const projects: object = await Project.find(
-        !district ? {} : { location: { region: district } }
-      );
+      const apartments: IApartment[] = await Apartment.find({
+        room: { $in: room },
+      });
 
-      await Promise.all(
-        projects.map(async (project: object) => {
-          const appartments: object[] = await Appartment.find(
-            !room
-              ? { projectId: project._id }
-              : { projectId: project._id, room }
-          );
-        })
-      );
+      // await Promise.all(
+      //   projects.map(async (project) => {
+      //     const apartments = await Apartment.find(
+      //       !room
+      //         ? { projectId: project._id }
+      //         : { projectId: project._id, room }
+      //     );
+      //   })
+      // );
+      console.log(apartments);
+
+      res.json({ apartments });
     } catch (err: any) {
       return res.error.handleError(res, err);
     }

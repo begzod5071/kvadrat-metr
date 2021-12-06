@@ -1,8 +1,12 @@
 import { Document } from "mongoose";
-import { Response } from "express";
+import { Response, Request } from "express";
 
 export interface IResponse extends Response {
-  error: any;
+  error?: any;
+}
+
+export interface IRequest extends Request {
+  files?: any;
 }
 
 export interface IDeveloper extends Document {
@@ -28,10 +32,10 @@ export interface IProject extends Document {
   location: IProjectLocation;
   images: IImage[];
   info: IInfo;
-  appartments: IAppartment[];
+  apartments: IApartment[];
 }
 
-export interface IAppartment extends Document {
+export interface IApartment extends Document {
   projectId: string;
   image: IImage;
   room: IFromTo;
@@ -99,4 +103,8 @@ export interface IContact {
   web: string;
   email: string;
   callCenter: string;
+}
+
+export interface IQuery {
+  sort?: string | string[];
 }

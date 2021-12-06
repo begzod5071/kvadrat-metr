@@ -1,16 +1,18 @@
+import { IQuery } from "../config/interfaces";
+
 class APIfeatures {
   query: object[];
-  queryString: object;
+  queryString: any;
 
   constructor(query: object[], queryString: object) {
     this.query = query;
     this.queryString = queryString;
   }
   filtering() {
-    const queryObj: object = { ...this.queryString };
+    const queryObj: any = { ...this.queryString };
 
     const excludedFields: string[] = ["page", "sort", "limit"];
-    excludedFields.forEach((el) => delete queryObj[el]);
+    excludedFields.forEach((el: string) => delete queryObj[el]);
 
     let queryStr: string | string[] | any = JSON.stringify(queryObj);
 
