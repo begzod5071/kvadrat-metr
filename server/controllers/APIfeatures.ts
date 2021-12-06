@@ -1,7 +1,7 @@
 import { IQuery } from "../config/interfaces";
 
 class APIfeatures {
-  query: object[];
+  query: any;
   queryString: any;
 
   constructor(query: object[], queryString: object) {
