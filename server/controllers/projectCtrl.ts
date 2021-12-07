@@ -5,7 +5,7 @@ import Apartment from "../models/apartmentModel";
 import Lead from "../models/leadModel";
 import Developer from "../models/developerModel";
 
-const projectCtrl: object = {
+const projectCtrl = {
   getProjects: async (req: Request, res: IResponse) => {
     try {
       const projects = await Project.find(1 == 1 ? {} : { isActive: true });
