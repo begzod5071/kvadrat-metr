@@ -35,7 +35,7 @@ const leadCtrl = {
   },
   updateLead: async (req: Request, res: IResponse) => {
     try {
-      const lead: ILead = await Lead.findByIdAndUpdate(req.params.id, req.body);
+      const lead = await Lead.findByIdAndUpdate(req.params.id, req.body);
       if (!lead) return res.error.leadNotFound(res);
 
       res.json({ message: "Updated lead" });
@@ -45,7 +45,7 @@ const leadCtrl = {
   },
   deleteLead: async (req: Request, res: IResponse) => {
     try {
-      const lead: ILead = await Lead.findByIdAndDelete(req.params.id);
+      const lead = await Lead.findByIdAndDelete(req.params.id);
       if (!lead) return res.error.leadNotFound(res);
 
       res.json({ message: "Deleted lead" });

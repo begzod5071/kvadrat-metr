@@ -61,6 +61,7 @@ const projectCtrl = {
         infoUz,
         infoRu,
         infoEn,
+        district,
       } = req.body;
 
       const developer = await Developer.findById(developerId);
@@ -89,6 +90,7 @@ const projectCtrl = {
           address,
           landmark,
           map,
+          district,
         },
         images,
         info: {

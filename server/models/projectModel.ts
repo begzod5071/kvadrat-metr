@@ -72,6 +72,10 @@ const projectSchema = new mongoose.Schema(
         type: String,
         required: true,
       },
+      district: {
+        type: String,
+        required: true,
+      },
     },
     images: {
       type: [
@@ -102,7 +106,7 @@ const projectSchema = new mongoose.Schema(
         default: null,
       },
     },
-    appartments: {
+    apartments: {
       type: Array,
       default: [],
     },
@@ -112,4 +116,4 @@ const projectSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model<IProject>("Projects", projectSchema);
+export default mongoose.model("Projects", projectSchema);

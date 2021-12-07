@@ -86,7 +86,7 @@ export interface ILocation {
 }
 
 export interface IProjectLocation extends ILocation {
-  region: string;
+  district: string;
 }
 
 export interface ISocial {

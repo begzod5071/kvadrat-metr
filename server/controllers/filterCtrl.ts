@@ -8,12 +8,18 @@ import { IProject, IApartment, IResponse } from "../config/interfaces";
 const filterCtrl = {
   getFilter: async (req: Request, res: IResponse) => {
     try {
-      const { room } = req.query;
-      console.log(room);
+      const { room, district, developerId, priceFrom, priceTo } = req.query;
 
-      const apartments: IApartment[] = await Apartment.find({
-        room: { $in: room },
-      });
+      console.log(district);
+      const quiries = { ...req.query };
+
+      const projects = await Project.find(
+        district
+          ? {
+              "location.district": { $in: district },
+            }
+          : {}
+      );
 
       // await Promise.all(
       //   projects.map(async (project) => {
@@ -24,9 +30,8 @@ const filterCtrl = {
       //     );
       //   })
       // );
-      console.log(apartments);
-
-      res.json({ apartments });
+      //
+      res.json({ length: projects.length, projects });
     } catch (err: any) {
       return res.error.handleError(res, err);
     }
