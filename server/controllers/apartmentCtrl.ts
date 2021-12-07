@@ -33,7 +33,7 @@ const apartmentCtrl = {
         length: newApartment.length,
         apartments: newApartment,
       });
-    } catch (err) {
+    } catch (err: any) {
       return res.error.serverErr(res, err);
     }
   },
@@ -53,7 +53,7 @@ const apartmentCtrl = {
       apartment.leads = leads;
 
       res.json(apartment);
-    } catch (err) {
+    } catch (err: any) {
       return res.error.serverErr(res, err);
     }
   },
@@ -90,7 +90,7 @@ const apartmentCtrl = {
       });
 
       res.json({ message: `Apartment is ${event}ed.` });
-    } catch (err) {
+    } catch (err: any) {
       return res.error.handleError(res, err);
     }
   },
@@ -114,13 +114,13 @@ const apartmentCtrl = {
       await newApartment.save();
 
       res.status(201).json({ message: "Created apartment" });
-    } catch (err) {
+    } catch (err: any) {
       return res.error.handleError(res, err);
     }
   },
   updateApartment: async (req: Request, res: IResponse) => {
     try {
-      const apartmentId = req.params.id;
+      const apartmentId: string = req.params.id;
 
       const apartment = await Apartment.findByIdAndUpdate(
         apartmentId,
@@ -131,7 +131,7 @@ const apartmentCtrl = {
       res.json({
         message: "Apartment is updated",
       });
-    } catch (err) {
+    } catch (err: any) {
       return res.error.handleError(res, err);
     }
   },
@@ -145,7 +145,7 @@ const apartmentCtrl = {
       await Apartment.findByIdAndDelete(apartment._id);
 
       res.json({ message: "Apartment deleted" });
-    } catch (err) {
+    } catch (err: any) {
       return res.error.handleError(res, err);
     }
   },
