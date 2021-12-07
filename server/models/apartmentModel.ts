@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { IApartment } from "../config/interfaces";
 
 const apartmentSchema = new mongoose.Schema(
   {
@@ -45,4 +46,4 @@ const apartmentSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model("Apartments", apartmentSchema);
+export default mongoose.model<IApartment>("Apartments", apartmentSchema);

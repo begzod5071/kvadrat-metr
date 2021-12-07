@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const deviceSchema = new mongoose.Schema(
   {
-    appartmentId: {
+    apartmentId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
     },

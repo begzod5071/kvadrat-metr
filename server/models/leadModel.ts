@@ -1,11 +1,12 @@
 import mongoose from "mongoose";
+import { ILead } from "../config/interfaces";
 
 const leadSchema = new mongoose.Schema(
   {
-    appartmentId: {
+    apartmentId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "Appartments",
+      ref: "Apartments",
     },
     name: {
       type: String,
@@ -26,4 +27,4 @@ const leadSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model("Leads", leadSchema);
+export default mongoose.model<ILead>("Leads", leadSchema);

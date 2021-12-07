@@ -37,7 +37,6 @@ const apartmentCtrl = {
       return res.error.serverErr(res, err);
     }
   },
-
   /**
    *
    * @param req
@@ -46,7 +45,7 @@ const apartmentCtrl = {
    */
   getApartment: async (req: Request, res: IResponse) => {
     try {
-      const apartment: IApartment = await Apartment.findById(req.params.id);
+      const apartment = await Apartment.findById(req.params.id);
       if (!apartment) return res.error.apartmentNotFound(res);
 
       const leads: ILead[] = await Lead.find({ apartmentId: apartment._id });
@@ -68,7 +67,7 @@ const apartmentCtrl = {
     try {
       const { apartmentId, deviceId, event } = req.body;
 
-      const apartment: IApartment[] = await Apartment.findById(apartmentId);
+      const apartment = await Apartment.findById(apartmentId);
       if (!apartment) return res.error.apartmentNotFound(res);
 
       const currDate: number = new Date().getTime();
@@ -84,10 +83,10 @@ const apartmentCtrl = {
       const newDevice = new Device({ apartmentId, deviceId, event });
       await newDevice.save();
 
-      const count: any = apartment[event];
+      // const count: number = apartment[event]
 
       await Apartment.findByIdAndUpdate(apartmentId, {
-        [event]: count + 1,
+        [event]: apartment[event] + 1,
       });
 
       res.json({ message: `Apartment is ${event}ed.` });
@@ -123,7 +122,7 @@ const apartmentCtrl = {
     try {
       const apartmentId = req.params.id;
 
-      const apartment: IApartment = await Apartment.findByIdAndUpdate(
+      const apartment = await Apartment.findByIdAndUpdate(
         apartmentId,
         req.body
       );
@@ -138,7 +137,7 @@ const apartmentCtrl = {
   },
   deleteApartment: async (req: Request, res: IResponse) => {
     try {
-      const apartment: IApartment = await Apartment.findById(req.params.id);
+      const apartment = await Apartment.findById(req.params.id);
       if (!apartment) return res.error.apartmentNotFound(res);
 
       await Lead.deleteMany({ apartmentId: apartment._id });
