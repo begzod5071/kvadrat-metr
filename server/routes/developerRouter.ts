@@ -4,12 +4,12 @@ import developerCtrl from "../controllers/developerCtrl";
 const router = express.Router();
 
 router
-  .route("/developers")
+  .route("/developer")
   .get(developerCtrl.getDevelopers)
   .post(developerCtrl.createDeveloper);
 
 router
-  .route("/developers/:id")
+  .route("/developer/:id")
   .get(developerCtrl.getDeveloper)
   .put(developerCtrl.updateDeveloper)
   .delete(developerCtrl.deleteDeveloper);

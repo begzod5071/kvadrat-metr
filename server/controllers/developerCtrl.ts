@@ -11,7 +11,7 @@ import Project from "../models/projectModel";
 import Apartment from "../models/apartmentModel";
 import Lead from "../models/leadModel";
 
-const developerCtrl: object = {
+const developerCtrl = {
   getDevelopers: async (req: Request, res: IResponse) => {
     try {
       const developers: IDeveloper[] = await Developer.find({});

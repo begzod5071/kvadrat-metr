@@ -46,4 +46,4 @@ const apartmentSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model<IApartment>("Apartments", apartmentSchema);
+export default mongoose.model<any>("Apartments", apartmentSchema);
