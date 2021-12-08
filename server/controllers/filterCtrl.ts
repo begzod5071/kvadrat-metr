@@ -8,9 +8,19 @@ import { IProject, IApartment, IResponse } from "../config/interfaces";
 const filterCtrl = {
   getFilter: async (req: Request, res: IResponse) => {
     try {
-      const { room, district, developerId, priceFrom, priceTo } = req.query;
+      const { priceFrom, priceTo } = req.query;
 
-      const quiries = { ...req.query };
+      const queries = { ...req.query };
+
+      ["priceFrom", "priceTo"].map((item: string) => delete queries[item]);
+
+      const apartments = await Apartment.find({
+        price: { $gte: priceFrom || 0, $lte: priceTo || 1000000000 },
+      });
+
+      const projectIds = apartments.map((apartment) => {
+        return apartment.projectId;
+      });
 
       const replacements: any = {
         district: "location.district",
@@ -18,17 +28,17 @@ const filterCtrl = {
         developerId: "developerId",
       };
 
-      let replacedItems = Object.keys(quiries).map((key) => {
+      let replacedItems = Object.keys(queries).map((key) => {
         if (key === "district" || key === "developerId") {
           const newKey = replacements[key] || key;
-          return { [newKey]: { ["$in"]: quiries[key] } };
+          return { [newKey]: { ["$in"]: queries[key] } };
         }
 
         if (key === "rooms") {
           const newKey = replacements[key] || key;
           return {
-            [`${newKey}.from`]: { ["$lte"]: quiries[key] },
-            [`${newKey}.to`]: { ["$gte"]: quiries[key] },
+            [`${newKey}.from`]: { ["$lte"]: queries[key] },
+            [`${newKey}.to`]: { ["$gte"]: queries[key] },
           };
         }
       });
@@ -38,7 +48,10 @@ const filterCtrl = {
         newTab = replacedItems.reduce((a, b) => Object.assign({}, a, b));
       }
 
-      const projects = await Project.find(newTab);
+      const projects = await Project.find({
+        ...newTab,
+        ...{ _id: { $in: projectIds } },
+      });
 
       res.json({ length: projects.length, projects });
     } catch (err: any) {
