@@ -108,3 +108,8 @@ export interface IContact {
 export interface IQuery {
   sort?: string | string[];
 }
+
+export interface IRole {
+  name: string;
+  permissions: string[];
+}
