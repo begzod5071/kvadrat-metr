@@ -49,6 +49,16 @@ export interface IApartment extends Document {
   updatedAt: Date;
 }
 
+export interface IUsers extends Document {
+  role: string;
+  name: string;
+  email: string;
+  password: string;
+  phone: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface ILead extends Document {
   projectId: string;
   image: IImage;

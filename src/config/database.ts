@@ -9,7 +9,7 @@ const db = async () => {
       useUnifiedTopology: true,
     } as ConnectOptions);
 
-    console.log("Mongodb connection");
+    console.log(`Mongodb connection`);
   } catch (err: any) {
     console.error(err.message);
   }
