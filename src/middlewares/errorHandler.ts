@@ -85,8 +85,8 @@ const errorHandler = (req: Request, res: any, next: NextFunction) => {
     apartmentNotFound: async (res: Response) => {
       res.status(400).json({
         err: {
-          name: "AppartmentNotFound",
-          message: "Appartment is not exist.",
+          name: "ApartmentNotFound",
+          message: "Apartment is not exist.",
         },
       });
     },
@@ -96,6 +96,18 @@ const errorHandler = (req: Request, res: any, next: NextFunction) => {
           name: "LeadNotFound",
           message: "Lead is not exist.",
         },
+      });
+    },
+    userNotFound: async (res: Response) => {
+      res.status(404).json({
+        name: "userNotFound",
+        message: "a user is not exist",
+      });
+    },
+    passwordNotMatch: async (res: Response) => {
+      res.status(404).json({
+        name: "passwordNotMatch",
+        message: "Password does not match",
       });
     },
   };
