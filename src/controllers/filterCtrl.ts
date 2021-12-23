@@ -46,6 +46,7 @@ const filterCtrl = {
 
       if (replacedItems.length !== 0) {
         newTab = replacedItems.reduce((a, b) => Object.assign({}, a, b));
+        console.log(newTab);
       }
 
       const projects = await Project.find({
