@@ -3,15 +3,9 @@ import Apartment from "../models/apartmentModel";
 import Project from "../models/projectModel";
 import Lead from "../models/leadModel";
 import Device from "../models/deviceModel";
-import { IResponse, IApartment, ILead, IProject } from "../config/interfaces";
+import { IResponse, IApartment, ILead, IEvent } from "../config/interfaces";
 
 const apartmentCtrl = {
-  /**
-   *
-   * @param req
-   * @param res
-   * @route GET /api/developer
-   */
   getApartments: async (req: Request, res: IResponse) => {
     try {
       const apartments: IApartment[] = await Apartment.find({});
@@ -37,12 +31,6 @@ const apartmentCtrl = {
       return res.error.serverErr(res, err);
     }
   },
-  /**
-   *
-   * @param req
-   * @param res
-   * @route GET /api/developer/:id
-   */
   getApartment: async (req: Request, res: IResponse) => {
     try {
       const apartment = await Apartment.findById(req.params.id);
@@ -57,15 +45,9 @@ const apartmentCtrl = {
       return res.error.serverErr(res, err);
     }
   },
-  /**
-   *
-   * @param req
-   * @param res
-   *
-   */
   postView: async (req: Request, res: IResponse) => {
     try {
-      const { apartmentId, deviceId, event } = req.body;
+      const { apartmentId, deviceId, event }: any = req.body;
 
       const apartment = await Apartment.findById(apartmentId);
       if (!apartment) return res.error.apartmentNotFound(res);
@@ -83,10 +65,10 @@ const apartmentCtrl = {
       const newDevice = new Device({ apartmentId, deviceId, event });
       await newDevice.save();
 
-      // const count: number = apartment[event]
+      const count: number = apartment[event];
 
       await Apartment.findByIdAndUpdate(apartmentId, {
-        [event]: apartment[event] + 1,
+        [event]: count + 1,
       });
 
       res.json({ message: `Apartment is ${event}ed.` });

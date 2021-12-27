@@ -1,7 +1,7 @@
 import { IResponse } from "../config/interfaces";
 import { Request } from "express";
 import bcrypt from "bcrypt";
-import User from "../models/userModels";
+import User from "../models/userModel";
 import jwt from "jsonwebtoken";
 import userConfig from "../config/user.config";
 

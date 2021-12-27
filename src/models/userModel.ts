@@ -1,29 +1,32 @@
 import mongoose from "mongoose";
+import { IUsers } from "../config/interfaces";
 
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    trim: true,
+const userSchema = new mongoose.Schema(
+  {
+    role: {
+      type: String,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true
+    },
+    password: {
+      type: String,
+      required: true
+    },
+    phone: {
+      type: String
+    },
   },
-  email: {
-    type: String,
-    required: true,
-  },
-  role: {
-    type: String,
-    enum: ["basic", "moderator", "admin", "superAdmin"],
-    default: "basic",
-  },
-  permissions: {
-    type: [
-      {
-        type: String,
-        enum: ["home", "adminPanel", "dashboardPanel"],
-      },
-    ],
-    default: [],
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
-export default mongoose.model("Users", userSchema);
+export default mongoose.model<IUsers>("Users", userSchema);
