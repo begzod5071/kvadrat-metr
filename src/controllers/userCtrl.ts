@@ -16,8 +16,8 @@ const userCtrl = {
       const matchPassword = await validatePassword(password, user.password);
       if (!matchPassword) return res.error.passwordNotMatch(res);
 
-      const accessToken = createAccessToken({ id: user._id });
-      const refreshToken = createRefreshToken({ id: user._id });
+      const accessToken = createAccessToken({ id: user._id, role: user.role });
+      const refreshToken = createRefreshToken({ id: user._id, role: user.role });
 
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
@@ -46,7 +46,6 @@ const validatePassword = async (
   return await bcrypt.compare(plainPassword, hashedPassword);
 };
 
-// Token
 // Token
 const createAccessToken = (user: object | string) => {
   return jwt.sign(user, userConfig.ACCESS_TOKEN_SECRET, {

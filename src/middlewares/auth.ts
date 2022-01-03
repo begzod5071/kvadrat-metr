@@ -1,9 +1,22 @@
-import { Request, Response, NextFunction } from "express";
+import { NextFunction } from "express";
+import { verify } from "jsonwebtoken"
 
-const auth = (req: Request, res: Response, next: NextFunction) => {
-  console.log(req.method);
+import {IRequest, IResponse} from "../config/interfaces"
+import userConfig from "../config/user.config";
 
-  next();
+const auth = (req: IRequest, res: IResponse, next: NextFunction) => {
+  try {    
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+    if(!token) return res.status(401).send('The application was rejected due to lack of token');
+    verify(token, userConfig.ACCESS_TOKEN_SECRET, (err, user)=> {
+      if(err) return res.error.invalidAuthorization(res, 403);
+      req.user = user;
+      next();    
+    })
+  } catch (error) {
+    return res.status(400).send('Invalid token!');
+  }
 };
 
 export default auth;
