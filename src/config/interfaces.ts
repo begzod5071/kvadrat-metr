@@ -129,3 +129,9 @@ export interface IEvent {
   deviceId: string;
   enum: any;
 }
+
+export interface ISendEmail {
+  to: string;
+  subject: string;
+  text: string;
+}
