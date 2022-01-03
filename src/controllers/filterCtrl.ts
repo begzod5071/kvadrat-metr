@@ -14,7 +14,7 @@ const filterCtrl = {
 
       ["priceFrom", "priceTo"].map((item: string) => delete queries[item]);
 
-      const apartments = await Apartment.find({
+      const apartments: IApartment[] = await Apartment.find({
         price: { $gte: priceFrom || 0, $lte: priceTo || 1000000000 },
       });
 

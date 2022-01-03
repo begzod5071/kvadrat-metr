@@ -47,6 +47,7 @@ const validatePassword = async (
 };
 
 // Token
+// Token
 const createAccessToken = (user: object | string) => {
   return jwt.sign(user, userConfig.ACCESS_TOKEN_SECRET, {
     expiresIn: "3d",

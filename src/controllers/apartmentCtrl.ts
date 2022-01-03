@@ -65,7 +65,7 @@ const apartmentCtrl = {
       const newDevice = new Device({ apartmentId, deviceId, event });
       await newDevice.save();
 
-      const count: number = apartment[event];
+      const count: any = apartment[event];
 
       await Apartment.findByIdAndUpdate(apartmentId, {
         [event]: count + 1,

@@ -43,8 +43,8 @@ export interface IApartment extends Document {
   bathroom: number;
   price: number;
   leads: ILead[];
-  click: number;
-  view: number;
+  click?: number;
+  view?: number;
   createdAt: Date;
   updatedAt: Date;
 }
