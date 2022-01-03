@@ -1,9 +1,9 @@
 import { IResponse } from "../config/interfaces";
 import { Request } from "express";
 import bcrypt from "bcrypt";
-import User from "../models/userModels";
+import User from "../models/userModel";
 import jwt from "jsonwebtoken";
-
+import userConfig from "../config/user.config";
 
 const userCtrl = {
   login: async (req: Request, res: IResponse) => {
@@ -48,12 +48,12 @@ const validatePassword = async (
 
 // Token
 const createAccessToken = (user: object | string) => {
-  return jwt.sign(user, , {
+  return jwt.sign(user, userConfig.ACCESS_TOKEN_SECRET, {
     expiresIn: "3d",
   });
 };
 const createRefreshToken = (user: object | any) => {
-  return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, {
+  return jwt.sign(user, userConfig.REFRESH_TOKEN_SECRET, {
     expiresIn: "7d",
   });
 };

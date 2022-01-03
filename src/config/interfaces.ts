@@ -123,3 +123,9 @@ export interface IRole {
   name: string;
   permissions: string[];
 }
+
+export interface IEvent {
+  apartmentId: string;
+  deviceId: string;
+  enum: any;
+}

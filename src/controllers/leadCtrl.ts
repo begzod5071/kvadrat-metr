@@ -17,7 +17,7 @@ const leadCtrl = {
     try {
       const { apartmentId, name, comment, phone } = req.body;
 
-      const apartment: IApartment = await Apartment.findById(apartmentId);
+      const apartment = await Apartment.findById(apartmentId);
       if (!apartment) return res.error.apartmentNotFound(res);
 
       const newLead = new Lead({
