@@ -7,6 +7,7 @@ export interface IResponse extends Response {
 
 export interface IRequest extends Request {
   files?: any;
+  user?: any;
 }
 
 export interface IDeveloper extends Document {
@@ -129,3 +130,5 @@ export interface IEvent {
   deviceId: string;
   enum: any;
 }
+
+
