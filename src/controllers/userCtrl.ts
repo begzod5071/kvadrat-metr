@@ -4,6 +4,8 @@ import bcrypt from "bcrypt";
 import User from "../models/userModel";
 import jwt from "jsonwebtoken";
 import userConfig from "../config/user.config";
+import helperFunctions from "../service/generatePassword";
+import sendEmail from "../utils/sendEmail";
 
 const userCtrl = {
   login: async (req: Request, res: IResponse) => {
@@ -17,7 +19,10 @@ const userCtrl = {
       if (!matchPassword) return res.error.passwordNotMatch(res);
 
       const accessToken = createAccessToken({ id: user._id, role: user.role });
-      const refreshToken = createRefreshToken({ id: user._id, role: user.role });
+      const refreshToken = createRefreshToken({
+        id: user._id,
+        role: user.role,
+      });
 
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
@@ -27,6 +32,47 @@ const userCtrl = {
 
       res.json({
         accessToken,
+      });
+    } catch (err) {
+      return res.error.handleError(res, err);
+    }
+  },
+
+  signUp: async (req: Request, res: IResponse) => {
+    try {
+      const { email, name, role } = req.body;
+
+      if (!email || !name || !role) return res.error.dataNotEnough(res);
+
+      const newPassword: string = await helperFunctions.generatePassword();
+      const hashNewPassword: string = await hashPassword(newPassword);
+
+      const resetUrl = `https://kvadratsquare-test.netlify.app`;
+
+      const message = `
+      <h1>This is your a new password</h1>
+      <p>Please go to this link to log In your account</p>
+      <a href=${resetUrl} clicktracking=off>${resetUrl}</a>
+      <h1>${newPassword}<h1/>
+      `;
+
+      try {
+        await sendEmail({
+          to: email,
+          subject: "Your password for login",
+          text: message,
+        });
+
+        res.status(200).json({ success: true, data: "Email sent" });
+      } catch (err) {
+        console.log(err);
+      }
+
+      const user = new User({
+        role,
+        name,
+        email,
+        password: hashNewPassword,
       });
     } catch (err) {
       return res.error.handleError(res, err);

@@ -3,8 +3,11 @@ import { ISendEmail } from "../config/interfaces";
 
 const sendEmail = async (options: ISendEmail) => {
   const transporter = await nodemailer.createTransport({
-    service: process.env.EMAIL_SERVICE,
-    auth: {},
+    service: "hotmail",
+    auth: {
+      user: "rafikovbegzod5071@gmail.com",
+      pass: "rafikhov3009@.com",
+    },
   });
 
   const mailOptions = {
@@ -15,9 +18,8 @@ const sendEmail = async (options: ISendEmail) => {
   };
 
   await transporter.sendMail(mailOptions, function (err, info) {
-    if (err) {
-      console.log(err);
-    }
+    if (err) return console.log(err);
+    console.log(info);
   });
 };
 

@@ -110,6 +110,12 @@ const errorHandler = (req: Request, res: any, next: NextFunction) => {
         message: "Password does not match",
       });
     },
+    dataNotEnough: async (res: Response) => {
+      res.status(400).json({
+        name: "dataNotEnough",
+        message: "Please fill all the fields!",
+      });
+    },
   };
 
   res.error = error;
