@@ -5,13 +5,13 @@ const sendEmail = async (options: ISendEmail) => {
   const transporter = await nodemailer.createTransport({
     service: "hotmail",
     auth: {
-      user: "rafikovbegzod5071@gmail.com",
-      pass: "rafikhov3009@.com",
+      user: "jahongirmh@gmail.com",
+      pass: "7008779a",
     },
   });
 
   const mailOptions = {
-    from: process.env.EMAIL_FROM,
+    from: "jahongirmh@gmail.com",
     to: options.to,
     subject: options.subject,
     html: options.text,

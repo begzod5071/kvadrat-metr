@@ -44,16 +44,19 @@ const userCtrl = {
 
       if (!email || !name || !role) return res.error.dataNotEnough(res);
 
+      const checkUser = await User.find({ email });
+      if (checkUser.length > 0) return res.error.userExist(res);
+
       const newPassword: string = await helperFunctions.generatePassword();
       const hashNewPassword: string = await hashPassword(newPassword);
 
       const resetUrl = `https://kvadratsquare-test.netlify.app`;
 
       const message = `
-      <h1>This is your a new password</h1>
+      <p>This is your password</p>
+      <h1>${newPassword}<h1/>
       <p>Please go to this link to log In your account</p>
       <a href=${resetUrl} clicktracking=off>${resetUrl}</a>
-      <h1>${newPassword}<h1/>
       `;
 
       try {
@@ -63,7 +66,18 @@ const userCtrl = {
           text: message,
         });
 
-        res.status(200).json({ success: true, data: "Email sent" });
+        const user = new User({
+          role,
+          name,
+          email,
+          password: hashNewPassword,
+        });
+
+        await user.save();
+
+        res.status(201).json({
+          message: "User created. Password is sent to email",
+        });
       } catch (err) {
         console.log(err);
       }
@@ -74,6 +88,9 @@ const userCtrl = {
         email,
         password: hashNewPassword,
       });
+
+      await user.save();
+      res.json("ok");
     } catch (err) {
       return res.error.handleError(res, err);
     }

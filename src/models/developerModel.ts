@@ -96,6 +96,10 @@ const developerSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
+  isShow: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 export default mongoose.model<IDeveloper>("Developers", developerSchema);

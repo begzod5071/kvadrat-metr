@@ -8,7 +8,7 @@ import { IResponse, IApartment, ILead, IEvent } from "../config/interfaces";
 const apartmentCtrl = {
   getApartments: async (req: Request, res: IResponse) => {
     try {
-      const apartments: IApartment[] = await Apartment.find({});
+      const apartments: IApartment[] = await Apartment.find({ isShow: true });
 
       const newApartment = await Promise.all(
         apartments.map(async (apartment: IApartment) => {

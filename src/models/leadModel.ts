@@ -21,6 +21,10 @@ const leadSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    isShow: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     timestamps: true,

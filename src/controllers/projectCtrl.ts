@@ -8,7 +8,9 @@ import Developer from "../models/developerModel";
 const projectCtrl = {
   getProjects: async (req: Request, res: IResponse) => {
     try {
-      const projects = await Project.find(1 == 1 ? {} : { isActive: true });
+      const projects = await Project.find(
+        1 == 1 ? { isShow: true } : { isActive: true }
+      );
 
       const newProjects = await Promise.all(
         projects.map(async (project) => {

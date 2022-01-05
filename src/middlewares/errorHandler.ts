@@ -116,6 +116,12 @@ const errorHandler = (req: Request, res: any, next: NextFunction) => {
         message: "Please fill all the fields!",
       });
     },
+    userExist: async (res: Response) => {
+      res.status(400).json({
+        name: "userExist",
+        message: "This email is already exist",
+      });
+    },
   };
 
   res.error = error;

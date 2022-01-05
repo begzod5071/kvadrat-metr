@@ -55,6 +55,10 @@ const projectSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isShow: {
+      type: Boolean,
+      default: true,
+    },
     year: {
       type: Number,
       required: true,

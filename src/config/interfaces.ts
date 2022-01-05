@@ -16,6 +16,7 @@ export interface IDeveloper extends Document {
   info: IInfo;
   contact: IContact;
   social: ISocial;
+  isShow: boolean;
   location: ILocation;
   projects: IProject[];
 }
@@ -29,6 +30,7 @@ export interface IProject extends Document {
   repair: boolean;
   parking: boolean;
   isActive: boolean;
+  isShow: boolean;
   year: number;
   location: IProjectLocation;
   images: IImage[];
@@ -46,6 +48,7 @@ export interface IApartment extends Document {
   leads: ILead[];
   click?: number;
   view?: number;
+  isShow: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -70,6 +73,7 @@ export interface ILead extends Document {
   leads: ILead[];
   click: number;
   view: number;
+  isShow: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

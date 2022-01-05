@@ -14,7 +14,9 @@ import Lead from "../models/leadModel";
 const developerCtrl = {
   getDevelopers: async (req: Request, res: IResponse) => {
     try {
-      const developers: IDeveloper[] = await Developer.find({});
+      const developers: IDeveloper[] = await Developer.find({
+        isShow: true,
+      });
 
       const newDevelopers = await Promise.all(
         developers.map(async (developer: IDeveloper) => {

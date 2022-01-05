@@ -9,11 +9,11 @@ import userRouter from "./userRouter";
 
 const router = express.Router();
 
-router.use("/", auth, developerRouter);
-router.use("/", auth, projectRouter);
-router.use("/", auth, apartmentRouter);
-router.use("/", auth, leadRouter);
-router.use("/", auth, filterRouter);
-router.use("/", auth, userRouter);
+router.use("/", developerRouter);
+router.use("/", projectRouter);
+router.use("/", apartmentRouter);
+router.use("/", leadRouter);
+router.use("/", filterRouter);
+router.use("/", userRouter);
 
 export default router;
