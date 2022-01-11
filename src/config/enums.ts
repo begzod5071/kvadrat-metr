@@ -19,4 +19,6 @@ export const permissions = [
   "createProject",
   "updateProject",
   "deleteProject",
+  "createRole",
+  "deleteRole",
 ];

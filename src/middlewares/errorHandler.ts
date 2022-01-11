@@ -122,6 +122,18 @@ const errorHandler = (req: Request, res: any, next: NextFunction) => {
         message: "This email is already exist",
       });
     },
+    roleNotExist: async (res: Response) => {
+      res.status(404).json({
+        name: "roleNotExist",
+        message: "Role does not exist",
+      });
+    },
+    notAllowed: async (res: Response) => {
+      res.status(400).json({
+        name: "notAllowed",
+        message: "You are not allowed",
+      });
+    },
   };
 
   res.error = error;

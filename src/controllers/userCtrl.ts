@@ -60,11 +60,15 @@ const userCtrl = {
       `;
 
       try {
-        await sendEmail({
+        const result = await sendEmail({
           to: email,
           subject: "Your password for login",
           text: message,
         });
+        if (!result.info)
+          return res
+            .status(500)
+            .json({ message: "an error occurred" + result.err });
 
         const user = new User({
           role,
@@ -81,16 +85,6 @@ const userCtrl = {
       } catch (err) {
         console.log(err);
       }
-
-      const user = new User({
-        role,
-        name,
-        email,
-        password: hashNewPassword,
-      });
-
-      await user.save();
-      res.json("ok");
     } catch (err) {
       return res.error.handleError(res, err);
     }

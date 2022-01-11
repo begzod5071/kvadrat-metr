@@ -4,8 +4,9 @@ import { IUsers } from "../config/interfaces";
 const userSchema = new mongoose.Schema(
   {
     role: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
+      ref: "Roles",
     },
     name: {
       type: String,
