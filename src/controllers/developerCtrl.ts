@@ -16,14 +16,14 @@ import Roles from "../models/roleModel";
 const developerCtrl = {
   getDevelopers: async (req: IRequest, res: IResponse) => {
     try {
+      let isAllowed = null;
       const roleId = req.user?.role;
 
-      const role = await Roles.findById(roleId);
-      if (!role) return res.error.roleNotExist(res);
-
-      const isAllowed = role.permissions.find(
+      const role: any = await Roles.findById(roleId);
+      
+      role && (isAllowed = role.permissions.find(
         (permission: string) => permission === "viewDeletedData"
-      );
+      ))
 
       const developers: IDeveloper[] = await Developer.find(
         isAllowed ? {} : { isShow: true }
