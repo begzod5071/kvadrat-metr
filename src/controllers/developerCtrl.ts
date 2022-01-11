@@ -4,19 +4,30 @@ import {
   IProject,
   IApartment,
   ILead,
+  IRequest,
 } from "../config/interfaces";
 import { Request, Response } from "express";
 import Developer from "../models/developerModel";
 import Project from "../models/projectModel";
 import Apartment from "../models/apartmentModel";
 import Lead from "../models/leadModel";
+import Roles from "../models/roleModel";
 
 const developerCtrl = {
-  getDevelopers: async (req: Request, res: IResponse) => {
+  getDevelopers: async (req: IRequest, res: IResponse) => {
     try {
-      const developers: IDeveloper[] = await Developer.find({
-        isShow: true,
-      });
+      const roleId = req.user?.role;
+
+      const role = await Roles.findById(roleId);
+      if (!role) return res.error.roleNotExist(res);
+
+      const isAllowed = role.permissions.find(
+        (permission: string) => permission === "viewDeletedData"
+      );
+
+      const developers: IDeveloper[] = await Developer.find(
+        isAllowed ? {} : { isShow: true }
+      );
 
       const newDevelopers = await Promise.all(
         developers.map(async (developer: IDeveloper) => {
@@ -165,15 +176,24 @@ const developerCtrl = {
           const apartments = await Apartment.find({ projectId: project._id });
           await Promise.all(
             apartments.map(async (apartment: IApartment) => {
-              await Lead.deleteMany({ apartmentId: apartment._id });
+              await Lead.updateMany(
+                { apartmentId: apartment._id },
+                { $set: { isShow: false } }
+              );
             })
           );
-          await Apartment.deleteMany({ projectId: project._id });
+          await Apartment.updateMany(
+            { projectId: project._id },
+            { $set: { isShow: false } }
+          );
         })
       );
-      await Project.deleteMany({ developerId: developer._id });
+      await Project.updateMany(
+        { developerId: developer._id },
+        { $set: { isShow: false } }
+      );
 
-      await Developer.findByIdAndDelete(developer._id);
+      await Developer.findByIdAndUpdate(developer._id, { isShow: false });
 
       res.json({ message: "Deleted developer" });
     } catch (err: any) {

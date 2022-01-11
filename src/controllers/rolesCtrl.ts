@@ -6,7 +6,7 @@ const rolesCtrl = {
   createRole: async (req: IRequest, res: IResponse) => {
     try {
       const { name, permissions } = req.body;
-      const roleId = req.user.role;
+      const roleId: string = req.user.role;
 
       const role = await Roles.findById(roleId);
       if (!role) return res.error.roleNotExist(res);
@@ -31,7 +31,7 @@ const rolesCtrl = {
   // Delete Role
   deleteRole: async (req: IRequest, res: IResponse) => {
     try {
-      const id = req.params.id;
+      const id: string = req.params.id;
       const roleId = req.user.role;
 
       const role = await Roles.findById(roleId);
@@ -43,10 +43,9 @@ const rolesCtrl = {
       if (!isAllowed) return res.error.notAllowed(res);
 
       const findRole = await Roles.findById(id);
-
       if (!findRole) return res.error.roleNotExist(res);
 
-      // await Roles.findByIdAndDelete(id);
+      await Roles.findByIdAndDelete(id);
 
       res.status(201).json({ message: "Role deleted" });
     } catch (err) {
