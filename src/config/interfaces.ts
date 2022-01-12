@@ -127,8 +127,8 @@ export interface IQuery {
 }
 
 export interface IRole {
-  name: string;
-  permissions: string[];
+  name?: string;
+  permissions?: string[];
 }
 
 export interface IEvent {
