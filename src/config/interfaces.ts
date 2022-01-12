@@ -8,7 +8,9 @@ export interface IResponse extends Response {
 export interface IRequest extends Request {
   files?: any;
   user?: any;
+  isAllowed?: boolean;
 }
+
 
 export interface IDeveloper extends Document {
   name: string;

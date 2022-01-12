@@ -4,18 +4,17 @@ import apartmentRouter from "./apartmentRouter";
 import filterRouter from "./filterRouter";
 import leadRouter from "./leadRouter";
 import projectRouter from "./projectRouter";
-import auth from "../middlewares/auth";
 import userRouter from "./userRouter";
 import roleCtrl from "./roleRouter";
 
 const router = express.Router();
 
 router.use("/", userRouter);
-router.use("/", auth, developerRouter);
-router.use("/", auth, projectRouter);
-router.use("/", auth, apartmentRouter);
-router.use("/", auth, leadRouter);
-router.use("/", auth, filterRouter);
-router.use("/", auth, roleCtrl);
+router.use("/", developerRouter);
+router.use("/", projectRouter);
+router.use("/", apartmentRouter);
+router.use("/", leadRouter);
+router.use("/", filterRouter);
+router.use("/", roleCtrl);
 
 export default router;
