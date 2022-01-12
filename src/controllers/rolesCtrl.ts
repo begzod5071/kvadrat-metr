@@ -26,15 +26,8 @@ const rolesCtrl = {
   deleteRole: async (req: IRequest, res: IResponse) => {
     try {
       const id: string = req.params.id;
-      const roleId = req.user.role;
-
-      const role = await Roles.findById(roleId);
-      if (!role) return res.error.roleNotExist(res);
-
-      const isAllowed = role.permissions.find(
-        (permission: string) => permission === "deleteRole"
-      );
-      if (!isAllowed) return res.error.notAllowed(res);
+      const Allowed = req.isAllowed
+      if (!Allowed) return res.error.notAllowed(res);
 
       const findRole = await Roles.findById(id);
       if (!findRole) return res.error.roleNotExist(res);
