@@ -6,15 +6,9 @@ const rolesCtrl = {
   createRole: async (req: IRequest, res: IResponse) => {
     try {
       const { name, permissions } = req.body;
-      const roleId: string = req.user.role;
+      const Allowed = req.isAllowed
 
-      const role = await Roles.findById(roleId);
-      if (!role) return res.error.roleNotExist(res);
-
-      const isAllowed = role.permissions.find(
-        (permission: string) => permission === "createRole"
-      );
-      if (!isAllowed) return res.error.notAllowed(res);
+      if (!Allowed) return res.error.notAllowed(res);
       const newRole = new Roles({
         name: name.toLowerCase(),
         permissions,
