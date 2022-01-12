@@ -5,6 +5,7 @@ import {
   IApartment,
   ILead,
   IRequest,
+  IRole,
 } from "../config/interfaces";
 import { Request, Response } from "express";
 import Developer from "../models/developerModel";
@@ -19,11 +20,12 @@ const developerCtrl = {
       let isAllowed = null;
       const roleId = req.user?.role;
 
-      const role: any = await Roles.findById(roleId);
-      
-      role && (isAllowed = role.permissions.find(
-        (permission: string) => permission === "viewDeletedData"
-      ))
+      const role = await Roles.findById(roleId);
+
+      role &&
+        (isAllowed = role.permissions.find(
+          (permission: string) => permission === "viewDeletedData"
+        ));
 
       const developers: IDeveloper[] = await Developer.find(
         isAllowed ? {} : { isShow: true }
@@ -112,7 +114,7 @@ const developerCtrl = {
       return res.error.serverErr(res, err);
     }
   },
-  createDeveloper: async (req: Request, res: IResponse) => {
+  createDeveloper: async (req: IRequest, res: IResponse) => {
     try {
       const {
         name,
