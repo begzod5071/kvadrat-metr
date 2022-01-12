@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 import userConfig from "../config/user.config";
 import helperFunctions from "../service/generatePassword";
 import sendEmail from "../utils/sendEmail";
+import Roles from "../models/roleModel"
 
 const userCtrl = {
   login: async (req: Request, res: IResponse) => {
@@ -17,11 +18,13 @@ const userCtrl = {
 
       const matchPassword = await validatePassword(password, user.password);
       if (!matchPassword) return res.error.passwordNotMatch(res);
-
-      const accessToken = createAccessToken({ id: user._id, role: user.role });
+      const userRole = await Roles.findById(user.role);
+      if (!userRole) return res.error.roleNotExist(res);
+      const accessToken = createAccessToken({ id: user._id, role: user.role, permissions: userRole.permissions });
       const refreshToken = createRefreshToken({
         id: user._id,
         role: user.role,
+        permissions: userRole.permissions,
       });
 
       res.cookie("refreshToken", refreshToken, {

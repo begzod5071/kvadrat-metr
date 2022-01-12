@@ -1,11 +1,12 @@
 import express from "express";
 import developerCtrl from "../controllers/developerCtrl";
+import authRole from "../middlewares/auth";
 
 const router = express.Router();
 
 router
   .route("/developer")
-  .get(developerCtrl.getDevelopers)
+  .get(authRole("viewDeletedData"), developerCtrl.getDevelopers)
   .post(developerCtrl.createDeveloper);
 
 router
