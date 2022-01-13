@@ -6,6 +6,7 @@ import leadRouter from "./leadRouter";
 import projectRouter from "./projectRouter";
 import userRouter from "./userRouter";
 import roleCtrl from "./roleRouter";
+import uploadRouter from "./uploadRouter"
 
 const router = express.Router();
 
@@ -16,5 +17,6 @@ router.use("/", apartmentRouter);
 router.use("/", leadRouter);
 router.use("/", filterRouter);
 router.use("/", roleCtrl);
+router.use("/", uploadRouter);
 
 export default router;

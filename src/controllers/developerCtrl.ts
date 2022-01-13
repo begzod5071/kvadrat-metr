@@ -11,7 +11,6 @@ import Developer from "../models/developerModel";
 import Project from "../models/projectModel";
 import Apartment from "../models/apartmentModel";
 import Lead from "../models/leadModel";
-import Roles from "../models/roleModel";
 
 const developerCtrl = {
   getDevelopers: async (req: IRequest, res: IResponse) => {
