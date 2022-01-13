@@ -2,7 +2,7 @@ export const permissions = [
   "createDeveloper",
   "updateDeveloper",
   "deleteDeveloper",
-  "postApartment",
+  "createApartment",
   "updateApartment",
   "deleteApartment",
   "getLeads",

@@ -3,12 +3,22 @@ import Apartment from "../models/apartmentModel";
 import Project from "../models/projectModel";
 import Lead from "../models/leadModel";
 import Device from "../models/deviceModel";
-import { IResponse, IApartment, ILead, IEvent } from "../config/interfaces";
+import {
+  IResponse,
+  IApartment,
+  ILead,
+  IEvent,
+  IRequest,
+} from "../config/interfaces";
 
 const apartmentCtrl = {
-  getApartments: async (req: Request, res: IResponse) => {
+  getApartments: async (req: IRequest, res: IResponse) => {
     try {
-      const apartments: IApartment[] = await Apartment.find({ isShow: true });
+      const Allowed = req.isAllowed;
+
+      const apartments: IApartment[] = await Apartment.find(
+        Allowed ? {} : { isShow: true }
+      );
 
       const newApartment = await Promise.all(
         apartments.map(async (apartment: IApartment) => {
@@ -76,8 +86,11 @@ const apartmentCtrl = {
       return res.error.handleError(res, err);
     }
   },
-  postApartment: async (req: Request, res: IResponse) => {
+  createApartment: async (req: IRequest, res: IResponse) => {
     try {
+      const Allowed = req.isAllowed;
+      if (!Allowed) return res.error.notAllowed(res);
+
       const { projectId, room, image, area, bathroom, price } = req.body;
 
       const project = await Project.findById(projectId);
@@ -100,8 +113,11 @@ const apartmentCtrl = {
       return res.error.handleError(res, err);
     }
   },
-  updateApartment: async (req: Request, res: IResponse) => {
+  updateApartment: async (req: IRequest, res: IResponse) => {
     try {
+      const Allowed = req.isAllowed;
+      if (!Allowed) return res.error.notAllowed(res);
+
       const apartmentId: string = req.params.id;
 
       const apartment = await Apartment.findByIdAndUpdate(
@@ -117,8 +133,11 @@ const apartmentCtrl = {
       return res.error.handleError(res, err);
     }
   },
-  deleteApartment: async (req: Request, res: IResponse) => {
+  deleteApartment: async (req: IRequest, res: IResponse) => {
     try {
+      const Allowed = req.isAllowed;
+      if (!Allowed) return res.error.notAllowed(res);
+
       const apartment = await Apartment.findById(req.params.id);
       if (!apartment) return res.error.apartmentNotFound(res);
 
