@@ -16,7 +16,7 @@ import Roles from "../models/roleModel";
 const developerCtrl = {
   getDevelopers: async (req: IRequest, res: IResponse) => {
     try {
-      const Allowed = req.isAllowed
+      const Allowed = req.isAllowed;
 
       const developers: IDeveloper[] = await Developer.find(
         Allowed ? {} : { isShow: true }
@@ -105,8 +105,10 @@ const developerCtrl = {
       return res.error.serverErr(res, err);
     }
   },
-  createDeveloper: async (req: Request, res: IResponse) => {
+  createDeveloper: async (req: IRequest, res: IResponse) => {
     try {
+      const Allowed = req.isAllowed;
+      if (!Allowed) return res.error.notAllowed(res);
       const {
         name,
         image,
@@ -145,8 +147,10 @@ const developerCtrl = {
       return res.error.handleError(res, err);
     }
   },
-  updateDeveloper: async (req: Request, res: IResponse) => {
+  updateDeveloper: async (req: IRequest, res: IResponse) => {
     try {
+      const Allowed = req.isAllowed;
+      if (!Allowed) return res.error.notAllowed(res);
       const developer = await Developer.findByIdAndUpdate(
         req.params.id,
         req.body
@@ -158,8 +162,11 @@ const developerCtrl = {
       return res.error.handleError(res, err);
     }
   },
-  deleteDeveloper: async (req: Request, res: IResponse) => {
+  deleteDeveloper: async (req: IRequest, res: IResponse) => {
     try {
+      const Allowed = req.isAllowed;
+      if (!Allowed) return res.error.notAllowed(res);
+
       const developer = await Developer.findById(req.params.id);
       if (!developer) return res.error.developerNotFound(res);
 

@@ -1,4 +1,4 @@
-import { IApartment, IResponse } from "../config/interfaces";
+import { IApartment, IRequest, IResponse } from "../config/interfaces";
 import { Request } from "express";
 import Project from "../models/projectModel";
 import Apartment from "../models/apartmentModel";
@@ -6,10 +6,14 @@ import Lead from "../models/leadModel";
 import Developer from "../models/developerModel";
 
 const projectCtrl = {
-  getProjects: async (req: Request, res: IResponse) => {
+  getProjects: async (req: IRequest, res: IResponse) => {
     try {
       const projects = await Project.find(
-        1 == 1 ? { isShow: true } : { isActive: true }
+        req.role === "superadmin"
+          ? {}
+          : req.isAllowed
+          ? { isShow: true }
+          : { isActive: true, isShow: true }
       );
 
       const newProjects = await Promise.all(
@@ -41,8 +45,10 @@ const projectCtrl = {
       return res.error.serverErr(res, err);
     }
   },
-  createProject: async (req: Request, res: IResponse) => {
+  createProject: async (req: IRequest, res: IResponse) => {
     try {
+      const Allowed = req.isAllowed;
+      if (!Allowed) return res.error.notAllowed(res);
       const {
         developerId,
         name,
@@ -108,8 +114,11 @@ const projectCtrl = {
       return res.error.handleError(res, err);
     }
   },
-  updateProject: async (req: Request, res: IResponse) => {
+  updateProject: async (req: IRequest, res: IResponse) => {
     try {
+      const Allowed = req.isAllowed;
+      if (!Allowed) return res.error.notAllowed(res);
+
       const project = await Project.findByIdAndUpdate(req.params.id, req.body);
       if (!project) return res.error.projectNotFound(res);
 
@@ -118,8 +127,11 @@ const projectCtrl = {
       return res.error.handleError(res, err);
     }
   },
-  deleteProject: async (req: Request, res: IResponse) => {
+  deleteProject: async (req: IRequest, res: IResponse) => {
     try {
+      const Allowed = req.isAllowed;
+      if (!Allowed) return res.error.notAllowed(res);
+
       const project = await Project.findById(req.params.id);
       if (!project) return res.error.projectNotFound(res);
 
@@ -127,13 +139,19 @@ const projectCtrl = {
 
       await Promise.all(
         apartments.map(async (apartment: IApartment) => {
-          await Lead.deleteMany({ apartmentId: apartment._id });
+          await Lead.updateMany(
+            { apartmentId: apartment._id },
+            { $set: { isShow: false } }
+          );
         })
       );
 
-      await Apartment.deleteMany({ projectId: project._id });
+      await Apartment.updateMany(
+        { projectId: project._id },
+        { $set: { isShow: false } }
+      );
 
-      await Project.findByIdAndDelete(project._id);
+      await Project.findByIdAndUpdate(project._id, { isShow: false });
 
       res.json({ message: "Deleted project" });
     } catch (err: any) {

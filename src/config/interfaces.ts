@@ -9,8 +9,8 @@ export interface IRequest extends Request {
   files?: any;
   user?: any;
   isAllowed?: boolean;
+  role?: string;
 }
-
 
 export interface IDeveloper extends Document {
   name: string;

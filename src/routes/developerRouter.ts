@@ -7,12 +7,12 @@ const router = express.Router();
 router
   .route("/developer")
   .get(authRole("viewDeletedData"), developerCtrl.getDevelopers)
-  .post(developerCtrl.createDeveloper);
+  .post(authRole("createDeveloper"), developerCtrl.createDeveloper);
 
 router
   .route("/developer/:id")
   .get(developerCtrl.getDeveloper)
-  .put(developerCtrl.updateDeveloper)
-  .delete(developerCtrl.deleteDeveloper);
+  .put(authRole("updateDeveloper"), developerCtrl.updateDeveloper)
+  .delete(authRole("deleteDeveloper"), developerCtrl.deleteDeveloper);
 
 export default router;

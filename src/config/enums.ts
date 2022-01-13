@@ -15,4 +15,5 @@ export const permissions = [
   "createRole",
   "deleteRole",
   "viewDeletedData",
+  "viewNotActive",
 ];
