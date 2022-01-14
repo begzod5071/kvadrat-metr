@@ -1,4 +1,4 @@
-module.exports = {
+export const info = {
   openapi: "3.0.3",
   info: {
     title: "Mohirdev Auth API",

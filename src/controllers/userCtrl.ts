@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 import userConfig from "../config/user.config";
 import helperFunctions from "../service/generatePassword";
 import sendEmail from "../utils/sendEmail";
-import Roles from "../models/roleModel"
+import Roles from "../models/roleModel";
 
 const userCtrl = {
   login: async (req: Request, res: IResponse) => {
@@ -20,17 +20,10 @@ const userCtrl = {
       if (!matchPassword) return res.error.passwordNotMatch(res);
       const userRole = await Roles.findById(user.role);
       if (!userRole) return res.error.roleNotExist(res);
-      const accessToken = createAccessToken({ id: user._id, role: user.role, permissions: userRole.permissions });
-      const refreshToken = createRefreshToken({
+      const accessToken = createAccessToken({
         id: user._id,
         role: user.role,
         permissions: userRole.permissions,
-      });
-
-      res.cookie("refreshToken", refreshToken, {
-        httpOnly: true,
-        path: "/api/token",
-        maxAge: 3 * 24 * 60 * 60 * 1000,
       });
 
       res.json({
@@ -110,11 +103,6 @@ const validatePassword = async (
 const createAccessToken = (user: object | string) => {
   return jwt.sign(user, userConfig.ACCESS_TOKEN_SECRET, {
     expiresIn: "3d",
-  });
-};
-const createRefreshToken = (user: object | any) => {
-  return jwt.sign(user, userConfig.REFRESH_TOKEN_SECRET, {
-    expiresIn: "7d",
   });
 };
 

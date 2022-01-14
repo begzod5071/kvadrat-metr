@@ -6,9 +6,13 @@ import leadRouter from "./leadRouter";
 import projectRouter from "./projectRouter";
 import userRouter from "./userRouter";
 import roleCtrl from "./roleRouter";
-import uploadRouter from "./uploadRouter"
+import uploadRouter from "./uploadRouter";
+import swaggerUI from "swagger-ui-express";
+import docs from "../docs";
 
 const router = express.Router();
+
+router.use("api-docs", swaggerUI.serve, swaggerUI.setup(docs));
 
 router.use("/", userRouter);
 router.use("/", developerRouter);
