@@ -1,6 +1,7 @@
 import {v2 as cloudinary} from "cloudinary"
 import express from "express"
-import { IImage, IRequest, IResponse } from "../config/interfaces";
+const fs = require("fs");
+import { IRequest, IResponse } from "../config/interfaces";
 
 const router = express.Router();
 
@@ -12,18 +13,44 @@ cloudinary.config({
 })
 
 router.post("/upload",async (req: IRequest, res: IResponse) => {
-  const {tempFilePath} = req.files.photo
   try {
-    cloudinary.uploader.upload(tempFilePath, (err: object, result: IImage)=> { 
-      const image: IImage = {
-        public_id: result.public_id, url: result.url
+    if (!req.files || Object.keys(req.files).length === 0) {
+      return res.status(400).json({ message: "No upload file" });
+    }
+
+    const file = req.files.file;
+    if (file.size > 5 * 1024 * 1024) {
+      removeTmp(file.tempFilePath);
+      return res.status(400).json({ message: "File large" });
+    }
+
+    if (file.mimetype !== "image/jpeg" && file.mimetype !== "image/png") {
+      removeTmp(file.tempFilePath);
+      return res.status(400).json({ message: "File format png or jpeg" });
+    }
+
+    cloudinary.uploader.upload(
+      file.tempFilePath,
+      { folder: "Kvadratmetr images" },
+      async (err, result: any) => {
+        if (err) throw err;
+
+        removeTmp(file.tempFilePath);
+
+        res.json({ public_id: result.public_id, url: result.secure_url });
       }
-      res.status(201).json(image)
-     });
+    );
   } catch (err) {
     return res.error.handleError(res, err);
   }
 });
+
+const removeTmp = (path: string) => {
+  fs.unlink(path, (err: object) => {
+    if (err) throw err;
+  });
+};
+
 
 export default router;
 
