@@ -12,7 +12,7 @@ import docs from "../docs";
 
 const router = express.Router();
 
-router.use("api-docs", swaggerUI.serve, swaggerUI.setup(docs));
+router.use("/api-docs", swaggerUI.serve, swaggerUI.setup(docs));
 
 router.use("/", userRouter);
 router.use("/", developerRouter);
