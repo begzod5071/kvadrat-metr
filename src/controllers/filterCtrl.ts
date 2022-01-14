@@ -16,6 +16,7 @@ const filterCtrl = {
 
       const apartments: IApartment[] = await Apartment.find({
         price: { $gte: priceFrom || 0, $lte: priceTo || 1000000000 },
+        isShow: true,
       });
 
       const projectIds = apartments.map((apartment) => {
@@ -52,6 +53,7 @@ const filterCtrl = {
       const projects = await Project.find({
         ...newTab,
         ...{ _id: { $in: projectIds } },
+        isActive: true,
       });
 
       res.json({ length: projects.length, projects });
