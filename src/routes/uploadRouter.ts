@@ -45,6 +45,21 @@ router.post("/upload",async (req: IRequest, res: IResponse) => {
   }
 });
 
+router.post("/destroy", (req: IRequest, res: IResponse) => {
+  try {
+    const { public_id } = req.body;
+    if (!public_id)
+      return res.status(400).json({ message: "No checked image" });
+
+    cloudinary.uploader.destroy(public_id, async (err: object, result: object) => {
+      if (err) throw err;
+      res.json({ message: "Image is deleted" });
+    });
+  } catch (err) {
+    return res.error.handleError(res, err);
+  }
+});
+
 const removeTmp = (path: string) => {
   fs.unlink(path, (err: object) => {
     if (err) throw err;
