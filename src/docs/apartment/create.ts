@@ -1,9 +1,9 @@
 export const create = {
   post: {
-    summary: "Add a new role",
-    description: "To create new role only for super admin",
-    tags: ["Role"],
-    operationId: "role",
+    summary: "Add a new apartment",
+    description: "To create new apartment only specific user",
+    tags: ["Apartment"],
+    operationId: "apartmentNew",
     security: [
       {
         bearerAuth: [],
@@ -13,10 +13,10 @@ export const create = {
       {
         name: "body",
         in: "body",
-        description: "Hello",
+        description: "the object that needs to create a new apartment",
         required: true,
         schema: {
-          $ref: "#/components/schemas/Role",
+          $ref: "#/components/schemas/NewApartment",
         },
       },
     ],

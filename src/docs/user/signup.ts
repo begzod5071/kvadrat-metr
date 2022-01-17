@@ -1,9 +1,9 @@
-export const create = {
+export const signup = {
   post: {
-    summary: "Add a new role",
-    description: "To create new role only for super admin",
-    tags: ["Role"],
-    operationId: "role",
+    summary: "create a new user",
+    description: "To create a new user only for super admin",
+    tags: ["User"],
+    operationId: "user",
     security: [
       {
         bearerAuth: [],
@@ -13,10 +13,10 @@ export const create = {
       {
         name: "body",
         in: "body",
-        description: "Hello",
+        description: "User object that needs to be added to the store",
         required: true,
         schema: {
-          $ref: "#/components/schemas/Role",
+          $ref: "#/components/schemas/User",
         },
       },
     ],

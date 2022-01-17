@@ -1,0 +1,18 @@
+export const error: string[] = [
+  "SERVER_ERROR",
+  "NoUpload",
+  "InvalidSize",
+  "InvalidType",
+  "InvalidPublicId",
+  "InvalidUploadImage",
+  "DeveloperNotFound",
+  "ProjectNotFound",
+  "ApartmentNotFound",
+  "LeadNotFound",
+  "userNotFound",
+  "passwordNotMatch",
+  "dataNotEnough",
+  "userExist",
+  "roleNotExist",
+  "notAllowed",
+];

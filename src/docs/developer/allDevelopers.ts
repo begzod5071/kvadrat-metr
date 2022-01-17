@@ -1,32 +1,21 @@
-export const create = {
-  post: {
-    summary: "Add a new role",
-    description: "To create new role only for super admin",
-    tags: ["Role"],
-    operationId: "role",
+export const getAllDevelopers = {
+  get: {
+    summary: "Get all Developers",
+    description: "To get all developers",
+    tags: ["Developer"],
+    operationId: "developer",
     security: [
       {
         bearerAuth: [],
       },
     ],
-    parameters: [
-      {
-        name: "body",
-        in: "body",
-        description: "Hello",
-        required: true,
-        schema: {
-          $ref: "#/components/schemas/Role",
-        },
-      },
-    ],
     responses: {
-      201: {
+      200: {
         description: "A successful response",
         content: {
           "application/json": {
             schema: {
-              $ref: "#/components/schemas/Success",
+              $ref: "#/components/schemas/Developers",
             },
           },
         },

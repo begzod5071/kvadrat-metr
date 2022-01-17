@@ -1,9 +1,11 @@
 import { info } from "./info";
-import servers from "./servers";
+import { servers } from "./servers";
+import { paths } from "./paths";
+import { components } from "./components";
 
-const docs = {
+export const docs = {
   ...info,
   ...servers,
+  ...components,
+  ...paths,
 };
-
-export default docs;

@@ -1,22 +1,17 @@
 export const create = {
   post: {
-    summary: "Add a new role",
-    description: "To create new role only for super admin",
-    tags: ["Role"],
-    operationId: "role",
-    security: [
-      {
-        bearerAuth: [],
-      },
-    ],
+    summary: "Add a new lead",
+    description: "To create new lead",
+    tags: ["Lead"],
+    operationId: "leadNew",
     parameters: [
       {
         name: "body",
         in: "body",
-        description: "Hello",
+        description: "the object that needs to create a new lead",
         required: true,
         schema: {
-          $ref: "#/components/schemas/Role",
+          $ref: "#/components/schemas/NewLead",
         },
       },
     ],

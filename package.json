@@ -29,7 +29,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.14",
     "nodemailer": "^6.7.2",
-    "swagger-ui-express": "^4.3.0"
+    "swagger-ui-express": "^4.3.0",
+    "tsoa": "^3.14.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",

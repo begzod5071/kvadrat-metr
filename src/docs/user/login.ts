@@ -1,32 +1,27 @@
-export const create = {
+export const login = {
   post: {
-    summary: "Add a new role",
-    description: "To create new role only for super admin",
-    tags: ["Role"],
-    operationId: "role",
-    security: [
-      {
-        bearerAuth: [],
-      },
-    ],
+    summary: "login",
+    description: "To log in only specific user",
+    tags: ["User"],
+    operationId: "login",
     parameters: [
       {
         name: "body",
         in: "body",
-        description: "Hello",
+        description: "the object that needs to log in to site",
         required: true,
         schema: {
-          $ref: "#/components/schemas/Role",
+          $ref: "#/components/schemas/Login",
         },
       },
     ],
     responses: {
-      201: {
+      200: {
         description: "A successful response",
         content: {
           "application/json": {
             schema: {
-              $ref: "#/components/schemas/Success",
+              $ref: "#/components/schemas/Token",
             },
           },
         },

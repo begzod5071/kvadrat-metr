@@ -1,7 +1,7 @@
-export default {
+export const servers = {
   servers: [
     {
-      url: "http://kvadratmetr.herokuapp.com/",
+      url: "http://localhost:4000/api",
       description: "Development server",
     },
   ],

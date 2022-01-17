@@ -8,7 +8,7 @@ import userRouter from "./userRouter";
 import roleCtrl from "./roleRouter";
 import uploadRouter from "./uploadRouter";
 import swaggerUI from "swagger-ui-express";
-import docs from "../docs";
+import { docs } from "../docs/index";
 
 const router = express.Router();
 

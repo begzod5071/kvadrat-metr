@@ -1,9 +1,9 @@
-export const create = {
-  post: {
-    summary: "Add a new role",
-    description: "To create new role only for super admin",
-    tags: ["Role"],
-    operationId: "role",
+export const deleteApartment = {
+  delete: {
+    summary: "delete a apartment",
+    description: "To delete a apartment only specific user",
+    tags: ["Apartment"],
+    operationId: "apartmentDel",
     security: [
       {
         bearerAuth: [],
@@ -11,17 +11,14 @@ export const create = {
     ],
     parameters: [
       {
-        name: "body",
-        in: "body",
-        description: "Hello",
+        name: "id",
+        in: "params",
+        description: "the id that needs to delete a apartment",
         required: true,
-        schema: {
-          $ref: "#/components/schemas/Role",
-        },
       },
     ],
     responses: {
-      201: {
+      200: {
         description: "A successful response",
         content: {
           "application/json": {
