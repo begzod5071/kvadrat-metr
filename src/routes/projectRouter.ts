@@ -11,6 +11,7 @@ router
 
 router
   .route("/project/:id")
+  .get(projectCtrl.getOneProject)
   .put(authRole("updateProject"), projectCtrl.updateProject)
   .delete(authRole("deleteProject"), projectCtrl.deleteProject);
 

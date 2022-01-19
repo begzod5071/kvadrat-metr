@@ -14,7 +14,7 @@ const projectCtrl = {
           : req.isAllowed
           ? { isShow: true }
           : { isActive: true, isShow: true }
-      );
+      ).populate('developerId').sort("-month");
 
       const newProjects = await Promise.all(
         projects.map(async (project) => {
@@ -110,6 +110,20 @@ const projectCtrl = {
       await newProject.save();
 
       res.status(201).json({ message: "Created project" });
+    } catch (err: any) {
+      return res.error.handleError(res, err);
+    }
+  },
+  getOneProject: async (req: IRequest, res: IResponse) => {
+    try {
+      const project = await Project.findById(req.params.id);
+      if (!project) return res.error.projectNotFound(res);
+
+      const count: number = project["click"]
+
+      await Project.findByIdAndUpdate(req.params.id, {click: count + 1})
+
+      res.json({project});
     } catch (err: any) {
       return res.error.handleError(res, err);
     }

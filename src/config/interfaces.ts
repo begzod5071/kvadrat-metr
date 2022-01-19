@@ -14,10 +14,12 @@ export interface IRequest extends Request {
 
 export interface IDeveloper extends Document {
   name: string;
+  userId: string;
   image: IImage;
   info: IInfo;
   contact: IContact;
   social: ISocial;
+  isActive: boolean;
   isShow: boolean;
   location: ILocation;
   projects: IProject[];
@@ -30,7 +32,8 @@ export interface IProject extends Document {
   area: IFromTo;
   rooms: IFromTo;
   repair: boolean;
-  parking: boolean;
+  parking: boolean;  
+  click: number;
   isActive: boolean;
   isShow: boolean;
   year: number;

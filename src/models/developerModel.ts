@@ -7,6 +7,11 @@ const developerSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    trim: true,
+    ref: 'Users',
+  },
   image: {
     type: Object,
     required: true,
@@ -14,7 +19,6 @@ const developerSchema = new mongoose.Schema({
   info: {
     uz: {
       type: String,
-      required: true,
       trim: true,
     },
     ru: {
@@ -31,17 +35,14 @@ const developerSchema = new mongoose.Schema({
   contact: {
     phone: {
       type: String,
-      required: true,
       trim: true,
     },
     web: {
       type: String,
-      required: true,
       trim: true,
     },
     email: {
       type: String,
-      required: true,
       trim: true,
     },
     callCenter: {
@@ -78,23 +79,24 @@ const developerSchema = new mongoose.Schema({
   location: {
     address: {
       type: String,
-      required: true,
       trim: true,
     },
     landmark: {
       type: String,
-      required: true,
       trim: true,
     },
     map: {
       type: String,
-      required: true,
       trim: true,
     },
   },
   projects: {
     type: Array,
     default: [],
+  },  
+  isActive: {
+    type: Boolean,
+    default: true,
   },
   isShow: {
     type: Boolean,
@@ -102,4 +104,4 @@ const developerSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.model<IDeveloper>("Developers", developerSchema);
+export default mongoose.model<IDeveloper>("Developer", developerSchema);

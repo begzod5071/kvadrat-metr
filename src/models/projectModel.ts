@@ -50,6 +50,10 @@ const projectSchema = new mongoose.Schema(
     parking: {
       type: Boolean,
       default: false,
+    },    
+    click: {
+      type: Number,
+      default: 0,
     },
     isActive: {
       type: Boolean,
