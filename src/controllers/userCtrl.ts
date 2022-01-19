@@ -40,8 +40,8 @@ const userCtrl = {
 
       if (!email || !name || !role) return res.error.dataNotEnough(res);
 
-      const checkUser = await User.find({ email });
-      if (checkUser.length > 0) return res.error.userExist(res);
+      const checkUser = await User.exists({ email });
+      if (checkUser) return res.error.userExist(res);
 
       const newPassword: string = await helperFunctions.generatePassword();
       const hashNewPassword: string = await hashPassword(newPassword);
@@ -102,7 +102,7 @@ const validatePassword = async (
 // Token
 const createAccessToken = (user: object | string) => {
   return jwt.sign(user, userConfig.ACCESS_TOKEN_SECRET, {
-    expiresIn: "3d",
+    expiresIn: "15d",
   });
 };
 
