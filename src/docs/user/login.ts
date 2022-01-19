@@ -4,17 +4,27 @@ export const login = {
     description: "To log in only specific user",
     tags: ["User"],
     operationId: "login",
-    parameters: [
-      {
-        name: "body",
-        in: "body",
-        description: "the object that needs to log in to site",
-        required: true,
-        schema: {
-          $ref: "#/components/schemas/Login",
+    // parameters: [
+    //   {
+    //     name: "body",
+    //     in: "body",
+    //     description: "the object that needs to log in to site",
+    //     required: true,
+    //     schema: {
+    //       $ref: "#/components/schemas/Login",
+    //     },
+    //   },
+    // ],
+    requestBody: {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            $ref: "#/components/schemas/Login",
+          },
         },
       },
-    ],
+    },
     responses: {
       200: {
         description: "A successful response",
