@@ -14,7 +14,9 @@ const projectCtrl = {
           : req.isAllowed
           ? { isShow: true }
           : { isActive: true, isShow: true }
-      ).populate('developerId').sort("-month");
+      )
+        .populate("developerId")
+        .sort("-month");
 
       const newProjects = await Promise.all(
         projects.map(async (project) => {
@@ -70,6 +72,7 @@ const projectCtrl = {
         infoRu,
         infoEn,
         district,
+        characters,
       } = req.body;
 
       const developer = await Developer.findById(developerId);
@@ -92,6 +95,7 @@ const projectCtrl = {
         },
         repair,
         parking,
+        characters,
         isActive,
         year,
         location: {
@@ -119,11 +123,11 @@ const projectCtrl = {
       const project = await Project.findById(req.params.id);
       if (!project) return res.error.projectNotFound(res);
 
-      const count: number = project["click"]
+      const count: number = project["click"];
 
-      await Project.findByIdAndUpdate(req.params.id, {click: count + 1})
+      await Project.findByIdAndUpdate(req.params.id, { click: count + 1 });
 
-      res.json({project});
+      res.json({ project });
     } catch (err: any) {
       return res.error.handleError(res, err);
     }

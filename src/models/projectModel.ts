@@ -50,7 +50,57 @@ const projectSchema = new mongoose.Schema(
     parking: {
       type: Boolean,
       default: false,
-    },    
+    },
+    characters: {
+      elevator: {
+        type: Boolean,
+        default: false,
+      },
+      workzone: {
+        type: Boolean,
+        default: false,
+      },
+      terrace: {
+        type: Boolean,
+        default: false,
+      },
+      kindergarden: {
+        type: Boolean,
+        default: false,
+      },
+      wifi: {
+        type: Boolean,
+        default: false,
+      },
+      bedroom: {
+        type: Boolean,
+        default: false,
+      },
+      supermarket: {
+        type: Boolean,
+        default: false,
+      },
+      parking: {
+        type: Boolean,
+        default: false,
+      },
+      panoramicWindow: {
+        type: Boolean,
+        default: false,
+      },
+      restaurant: {
+        type: Boolean,
+        default: false,
+      },
+      security: {
+        type: Boolean,
+        default: false,
+      },
+      playground: {
+        type: Boolean,
+        default: false,
+      },
+    },
     click: {
       type: Number,
       default: 0,

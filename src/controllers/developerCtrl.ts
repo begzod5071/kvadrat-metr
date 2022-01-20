@@ -25,10 +25,11 @@ const developerCtrl = {
         developers.map(async (developer: IDeveloper) => {
           const projects: IProject[] = await Project.find(
             req.role === "superadmin"
-          ? {developerId: developer._id,}
-          : req.isAllowed
-          ? {developerId: developer._id, isShow: true }
-          : {developerId: developer._id, isActive: true, isShow: true }).populate('developerId');
+              ? { developerId: developer._id }
+              : req.isAllowed
+              ? { developerId: developer._id, isShow: true }
+              : { developerId: developer._id, isActive: true, isShow: true }
+          ).populate("developerId");
 
           const newProjects = await Promise.all(
             projects.map(async (project: IProject) => {

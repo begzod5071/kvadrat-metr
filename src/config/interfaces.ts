@@ -25,6 +25,21 @@ export interface IDeveloper extends Document {
   projects: IProject[];
 }
 
+export interface ICharacter {
+  elevator: boolean;
+  workzone: boolean;
+  terrace: boolean;
+  kindergarden: boolean;
+  wifi: boolean;
+  bedroom: boolean;
+  supermarket: boolean;
+  parking: boolean;
+  panoramicWindow: boolean;
+  restaurant: boolean;
+  security: boolean;
+  playground: boolean;
+}
+
 export interface IProject extends Document {
   developerId: string;
   name: string;
@@ -32,7 +47,8 @@ export interface IProject extends Document {
   area: IFromTo;
   rooms: IFromTo;
   repair: boolean;
-  parking: boolean;  
+  parking: boolean;
+  characters: ICharacter;
   click: number;
   isActive: boolean;
   isShow: boolean;
