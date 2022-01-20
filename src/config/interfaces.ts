@@ -47,6 +47,7 @@ export interface IProject extends Document {
   area: IFromTo;
   rooms: IFromTo;
   repair: boolean;
+  bathroom: IFromTo;
   parking: boolean;
   characters: ICharacter;
   click: number;

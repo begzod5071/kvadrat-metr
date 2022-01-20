@@ -23,6 +23,15 @@ const projectSchema = new mongoose.Schema(
         required: true,
       },
     },
+    bathroom: {
+      from: {
+        type: Number,
+        default: 1,
+      },
+      to: {
+        type: Number,
+      },
+    },
     area: {
       from: {
         type: Number,

@@ -73,6 +73,7 @@ const projectCtrl = {
         infoEn,
         district,
         characters,
+        bathroom,
       } = req.body;
 
       const developer = await Developer.findById(developerId);
@@ -97,6 +98,7 @@ const projectCtrl = {
         parking,
         characters,
         isActive,
+        bathroom,
         year,
         location: {
           address,
