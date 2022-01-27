@@ -111,7 +111,7 @@ export interface IFromTo {
 }
 
 export interface IInfo {
-  uz: string;
+  uz: string | null;
   ru: string | null;
   en: string | null;
 }
