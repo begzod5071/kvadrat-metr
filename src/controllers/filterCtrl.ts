@@ -55,6 +55,7 @@ const filterCtrl = {
         ...newTab,
         ...{ _id: { $in: projectIds } },
         isActive: true,
+        isShow: true,
       }).populate("developerId");
 
       const newProjects = await Promise.all(

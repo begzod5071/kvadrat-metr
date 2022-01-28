@@ -13,6 +13,7 @@ export interface IRequest extends Request {
 }
 
 export interface IDeveloper extends Document {
+  _id:string;
   name: string;
   userId: string;
   image: IImage;

@@ -15,4 +15,8 @@ router
   .put(authRole("updateDeveloper"), developerCtrl.updateDeveloper)
   .delete(authRole("deleteDeveloper"), developerCtrl.deleteDeveloper);
 
+router
+  .route("/change/developer/:id")
+  .put(authRole("updateDeveloper"), developerCtrl.hideDeveloper);
+
 export default router;

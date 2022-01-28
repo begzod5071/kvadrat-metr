@@ -18,7 +18,7 @@ const developerCtrl = {
       const Allowed = req.isAllowed;
 
       const developers: IDeveloper[] = await Developer.find(
-        Allowed ? {} : { isShow: true }
+        Allowed ? {} : { isShow: true, isActive: true }
       );
 
       const newDevelopers = await Promise.all(
@@ -168,6 +168,8 @@ const developerCtrl = {
   },
   deleteDeveloper: async (req: IRequest, res: IResponse) => {
     try {
+      const {isShow} = req.body
+
       const Allowed = req.isAllowed;
       if (!Allowed) return res.error.notAllowed(res);
 
@@ -182,24 +184,46 @@ const developerCtrl = {
             apartments.map(async (apartment: IApartment) => {
               await Lead.updateMany(
                 { apartmentId: apartment._id },
-                { $set: { isShow: false } }
+                { $set: { isShow } }
               );
             })
           );
           await Apartment.updateMany(
             { projectId: project._id },
-            { $set: { isShow: false } }
+            { $set: { isShow } }
           );
         })
       );
       await Project.updateMany(
         { developerId: developer._id },
-        { $set: { isShow: false } }
+        { $set: { isShow } }
       );
 
-      await Developer.findByIdAndUpdate(developer._id, { isShow: false });
+      await Developer.findByIdAndUpdate(developer._id, { isShow });
 
       res.json({ message: "Deleted developer" });
+    } catch (err: any) {
+      return res.error.handleError(res, err);
+    }
+  },
+
+  hideDeveloper: async (req: IRequest, res: IResponse) => {
+    try {
+      const {isActive} = req.body
+      const Allowed = req.isAllowed;
+      if (!Allowed) return res.error.notAllowed(res);
+
+      const developer = await Developer.findById(req.params.id);
+      if (!developer) return res.error.developerNotFound(res);
+      
+      await Project.updateMany(
+        { developerId: developer._id },
+        { $set: { isActive } }
+      );
+
+      await Developer.findByIdAndUpdate(developer._id, { isActive });
+
+      res.json({ message: "Changed developer" });
     } catch (err: any) {
       return res.error.handleError(res, err);
     }
