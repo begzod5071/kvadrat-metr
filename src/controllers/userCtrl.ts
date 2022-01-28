@@ -23,6 +23,7 @@ const userCtrl = {
       if (!userRole) return res.error.roleNotExist(res);
       const accessToken = createAccessToken({
         id: user._id,
+        name: user.name,
         role: userRole.name,
         permissions: userRole.permissions,
       });

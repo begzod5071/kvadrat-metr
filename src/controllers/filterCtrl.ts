@@ -55,9 +55,29 @@ const filterCtrl = {
         ...newTab,
         ...{ _id: { $in: projectIds } },
         isActive: true,
-      });
+      }).populate("developerId");
 
-      res.json({ length: projects.length, projects });
+      const newProjects = await Promise.all(
+        projects.map(async (project) => {
+          const apartments = await Apartment.find({ projectId: project._id });
+
+          const newApartments = await Promise.all(
+            apartments.map(async (apartment: IApartment) => {
+              const leads = await Lead.find({ apartmentId: apartment._id });
+
+              apartment.leads = leads;
+
+              return apartment;
+            })
+          );
+
+          project.apartments = newApartments;
+
+          return project;
+        })
+      );
+
+      res.json({ length: newProjects.length, newProjects });
     } catch (err: any) {
       return res.error.handleError(res, err);
     }
