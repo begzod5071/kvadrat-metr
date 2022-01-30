@@ -14,7 +14,7 @@ const rolesCtrl = {
         permissions,
       });
 
-      await newRole.save();
+      await newRole.save();      
 
       res.status(201).json({ message: "Role created" });
     } catch (err) {

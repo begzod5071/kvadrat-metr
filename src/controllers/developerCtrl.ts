@@ -19,7 +19,7 @@ const developerCtrl = {
 
       const developers: IDeveloper[] = await Developer.find(
         Allowed ? {} : { isShow: true, isActive: true }
-      );
+      ).populate("userId");
 
       const newDevelopers = await Promise.all(
         developers.map(async (developer: IDeveloper) => {
@@ -29,7 +29,7 @@ const developerCtrl = {
               : req.isAllowed
               ? { developerId: developer._id, isShow: true }
               : { developerId: developer._id, isActive: true, isShow: true }
-          ).populate("developerId");
+          ).populate("developerId")
 
           const newProjects = await Promise.all(
             projects.map(async (project: IProject) => {
@@ -109,8 +109,9 @@ const developerCtrl = {
       return res.error.serverErr(res, err);
     }
   },
+
   createDeveloper: async (req: IRequest, res: IResponse) => {
-    try {
+    try {      
       const Allowed = req.isAllowed;
       if (!Allowed) return res.error.notAllowed(res);
       const {
@@ -146,12 +147,13 @@ const developerCtrl = {
       });
       await newDeveloper.save();
 
-      res.status(201).json({ message: "Created developer" });
+      res.status(201).json({ message: "Created developer" , id: newDeveloper._id});
     } catch (err: any) {
       return res.error.handleError(res, err);
     }
   },
   updateDeveloper: async (req: IRequest, res: IResponse) => {
+    
     try {
       const Allowed = req.isAllowed;
       if (!Allowed) return res.error.notAllowed(res);
@@ -168,6 +170,7 @@ const developerCtrl = {
   },
   deleteDeveloper: async (req: IRequest, res: IResponse) => {
     try {
+      
       const {isShow} = req.body
 
       const Allowed = req.isAllowed;
@@ -184,22 +187,22 @@ const developerCtrl = {
             apartments.map(async (apartment: IApartment) => {
               await Lead.updateMany(
                 { apartmentId: apartment._id },
-                { $set: { isShow } }
+                { $set: {isShow: isShow, isActive: isShow } }
               );
             })
           );
           await Apartment.updateMany(
             { projectId: project._id },
-            { $set: { isShow } }
+            { $set: {isShow: isShow, isActive: isShow } }
           );
         })
       );
       await Project.updateMany(
         { developerId: developer._id },
-        { $set: { isShow } }
+        { $set: { isShow: isShow, isActive: isShow } }
       );
 
-      await Developer.findByIdAndUpdate(developer._id, { isShow });
+      await Developer.findByIdAndUpdate(developer._id, { isShow: isShow, isActive: isShow });
 
       res.json({ message: "Deleted developer" });
     } catch (err: any) {
@@ -208,6 +211,7 @@ const developerCtrl = {
   },
 
   hideDeveloper: async (req: IRequest, res: IResponse) => {
+    
     try {
       const {isActive} = req.body
       const Allowed = req.isAllowed;

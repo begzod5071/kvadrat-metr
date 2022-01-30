@@ -38,8 +38,7 @@ const userCtrl = {
 
   signUp: async (req: Request, res: IResponse) => {
     try {
-      const { email, name, role, password, developerId } = req.body;
-      console.log(req.body);
+      const { email, name, role, password, developerId } = req.body.userData;
 
       if (!email || !name || !role || !password)
         return res.error.dataNotEnough(res);
@@ -91,13 +90,13 @@ const userCtrl = {
         name,
         email,
         password: hashNewPassword,
-      });
+      }
+      );
 
       const newUser = await user.save();
 
       await Developer.findByIdAndUpdate(developerId, { userId: newUser._id });
 
-      console.log(newUser);
       res.status(201).json({
         message: "User created",
       });

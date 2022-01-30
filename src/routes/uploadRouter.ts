@@ -14,11 +14,13 @@ cloudinary.config({
 
 router.post("/upload",async (req: IRequest, res: IResponse) => {
   try {
+    
     if (!req.files || Object.keys(req.files).length === 0) {
       return res.status(400).json({ message: "No upload file" });
     }
 
-    const file = req.files.file;
+    const file = req.files.files;
+    
     if (file.size > 5 * 1024 * 1024) {
       removeTmp(file.tempFilePath);
       return res.status(400).json({ message: "File large" });

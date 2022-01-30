@@ -8,7 +8,6 @@ import { IProject, IApartment, IResponse } from "../config/interfaces";
 const filterCtrl = {
   getFilter: async (req: Request, res: IResponse) => {
     try {
-      console.log(req.query); 
 
       const { priceFrom, priceTo } = req.query;
 

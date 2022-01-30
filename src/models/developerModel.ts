@@ -18,7 +18,8 @@ const developerSchema = new mongoose.Schema({
   },
   info: {
     uz: {
-      type: String,
+      type: String,      
+      default: null,
       trim: true,
     },
     ru: {
