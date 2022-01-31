@@ -10,7 +10,7 @@ const developerSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     trim: true,
-    ref: 'Users',
+    ref: "Users",
   },
   image: {
     type: Object,
@@ -18,7 +18,7 @@ const developerSchema = new mongoose.Schema({
   },
   info: {
     uz: {
-      type: String,      
+      type: String,
       default: null,
       trim: true,
     },
@@ -86,15 +86,12 @@ const developerSchema = new mongoose.Schema({
       type: String,
       trim: true,
     },
-    map: {
-      type: String,
-      trim: true,
-    },
+    map: Array,
   },
   projects: {
     type: Array,
     default: [],
-  },  
+  },
   isActive: {
     type: Boolean,
     default: true,

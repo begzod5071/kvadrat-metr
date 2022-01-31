@@ -135,10 +135,7 @@ const projectSchema = new mongoose.Schema(
         type: String,
         required: true,
       },
-      map: {
-        type: String,
-        required: true,
-      },
+      map: Array,
       district: {
         type: String,
         required: true,
