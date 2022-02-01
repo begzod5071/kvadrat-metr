@@ -6,7 +6,7 @@ const router = express.Router();
 
 router
   .route("/developer")
-  .get(authRole("viewDeletedData"), developerCtrl.getDevelopers)
+  .get(authRole("viewNotActive"), developerCtrl.getDevelopers)
   .post(authRole("createDeveloper"), developerCtrl.createDeveloper);
 
 router

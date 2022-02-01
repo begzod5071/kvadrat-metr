@@ -20,7 +20,6 @@ const projectSchema = new mongoose.Schema(
       },
       to: {
         type: Number,
-        required: true,
       },
     },
     bathroom: {
@@ -39,7 +38,6 @@ const projectSchema = new mongoose.Schema(
       },
       to: {
         type: Number,
-        required: true,
       },
     },
     rooms: {
@@ -49,7 +47,6 @@ const projectSchema = new mongoose.Schema(
       },
       to: {
         type: Number,
-        required: true,
       },
     },
     repair: {
@@ -124,21 +121,17 @@ const projectSchema = new mongoose.Schema(
     },
     year: {
       type: Number,
-      required: true,
     },
     location: {
       address: {
         type: String,
-        required: true,
       },
       landmark: {
         type: String,
-        required: true,
       },
       map: Array,
       district: {
         type: String,
-        required: true,
       },
     },
     images: {
@@ -159,7 +152,7 @@ const projectSchema = new mongoose.Schema(
     info: {
       uz: {
         type: String,
-        required: true,
+        default: null,
       },
       ru: {
         type: String,

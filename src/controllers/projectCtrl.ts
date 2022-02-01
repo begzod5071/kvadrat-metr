@@ -135,6 +135,8 @@ const projectCtrl = {
     }
   },
   updateProject: async (req: IRequest, res: IResponse) => {
+    console.log(req.body);
+    
     try {
       const Allowed = req.isAllowed;
       if (!Allowed) return res.error.notAllowed(res);
