@@ -90,8 +90,7 @@ const userCtrl = {
         name,
         email,
         password: hashNewPassword,
-      }
-      );
+      });
 
       const newUser = await user.save();
 
