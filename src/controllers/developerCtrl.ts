@@ -65,7 +65,6 @@ const developerCtrl = {
         status: "OK",
         length: newDevelopers.length,
         developers: newDevelopers,
-        user: req.user,
       });
     } catch (err: any) {
       return res.error.serverErr(res, err);

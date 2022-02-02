@@ -5,6 +5,7 @@ import filterRouter from "./filterRouter";
 import leadRouter from "./leadRouter";
 import projectRouter from "./projectRouter";
 import userRouter from "./userRouter";
+import homeRouter from "./homeRouter";
 import roleCtrl from "./roleRouter";
 import uploadRouter from "./uploadRouter";
 import swaggerUI from "swagger-ui-express";
@@ -15,6 +16,7 @@ const router = express.Router();
 router.use("/api-docs", swaggerUI.serve, swaggerUI.setup(docs));
 
 router.use("/", userRouter);
+router.use("/", homeRouter);
 router.use("/", developerRouter);
 router.use("/", projectRouter);
 router.use("/", apartmentRouter);
