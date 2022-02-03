@@ -193,6 +193,47 @@ export const components = {
           parking: {
             type: "boolean",
           },
+          characters: {
+            type: "object",
+            properties: {
+              elevator: {
+                type: "boolean",
+              },
+              workzone: {
+                type: "boolean",
+              },
+              terrace: {
+                type: "boolean",
+              },
+              kindergarden: {
+                type: "boolean",
+              },
+              wifi: {
+                type: "boolean",
+              },
+              bedroom: {
+                type: "boolean",
+              },
+              supermarket: {
+                type: "boolean",
+              },
+              parking: {
+                type: "boolean",
+              },
+              panoramicWindow: {
+                type: "boolean",
+              },
+              restaurant: {
+                type: "boolean",
+              },
+              security: {
+                type: "boolean",
+              },
+              playground: {
+                type: "boolean",
+              },
+            },
+          },
           year: {
             type: "integer",
           },
