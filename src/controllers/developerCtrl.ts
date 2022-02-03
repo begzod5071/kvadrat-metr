@@ -19,7 +19,7 @@ const developerCtrl = {
 
       const developers: IDeveloper[] = await Developer.find(
         Allowed ? {} : { isShow: true, isActive: true }
-      ).populate("userId");
+      ).sort({createdAt: -1}).populate("userId");
 
       const newDevelopers = await Promise.all(
         developers.map(async (developer: IDeveloper) => {
