@@ -51,9 +51,11 @@ const projectCtrl = {
     try {
       const Allowed = req.isAllowed;
       if (!Allowed) return res.error.notAllowed(res);
+      
       const {
         developerId,
         name,
+        logoProject,
         floorFrom,
         floorTo,
         areaFrom,

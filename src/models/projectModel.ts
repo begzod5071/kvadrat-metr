@@ -134,6 +134,14 @@ const projectSchema = new mongoose.Schema(
         type: String,
       },
     },
+    logoProject: {
+      url: {
+        type: String,
+      },
+      public_id: {
+        type: String,
+      },
+    },
     images: {
       type: [
         {
