@@ -135,13 +135,69 @@ const projectCtrl = {
     }
   },
   updateProject: async (req: IRequest, res: IResponse) => {
-    console.log(req.body);
-    
     try {
+      const {
+        developerId,
+        name,
+        floorFrom,
+        floorTo,
+        areaFrom,
+        areaTo,
+        roomsFrom,
+        roomsTo,
+        repair,
+        parking,
+        isActive,
+        year,
+        address,
+        landmark,
+        map,
+        images,
+        infoUz,
+        infoRu,
+        infoEn,
+        district,
+        characters,
+        bathroom,
+      } = req.body;
+
       const Allowed = req.isAllowed;
       if (!Allowed) return res.error.notAllowed(res);
 
-      const project = await Project.findByIdAndUpdate(req.params.id, req.body);
+      const project = await Project.findByIdAndUpdate(req.params.id, {
+        developerId,
+        name,
+        floor: {
+          from: floorFrom,
+          to: floorTo,
+        },
+        area: {
+          from: areaFrom,
+          to: areaTo,
+        },
+        rooms: {
+          from: roomsFrom,
+          to: roomsTo,
+        },
+        repair,
+        parking,
+        characters,
+        isActive,
+        bathroom,
+        year,
+        location: {
+          address,
+          landmark,
+          map,
+          district,
+        },
+        images,
+        info: {
+          uz: infoUz,
+          ru: infoRu,
+          en: infoEn,
+        },
+      });
       if (!project) return res.error.projectNotFound(res);
 
       res.json({ message: "Updated project" });
