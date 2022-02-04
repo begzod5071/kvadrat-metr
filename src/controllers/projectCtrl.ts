@@ -48,12 +48,15 @@ const projectCtrl = {
     }
   },
   createProject: async (req: IRequest, res: IResponse) => {
+    
     try {
       const Allowed = req.isAllowed;
       if (!Allowed) return res.error.notAllowed(res);
+      
       const {
         developerId,
         name,
+        logoProject,
         floorFrom,
         floorTo,
         areaFrom,
@@ -82,6 +85,7 @@ const projectCtrl = {
       const newProject = new Project({
         developerId,
         name,
+        logoProject,
         floor: {
           from: floorFrom,
           to: floorTo,
