@@ -48,7 +48,6 @@ const projectCtrl = {
     }
   },
   createProject: async (req: IRequest, res: IResponse) => {
-    console.log(req.body);
     
     try {
       const Allowed = req.isAllowed;
