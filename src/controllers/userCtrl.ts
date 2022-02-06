@@ -103,6 +103,31 @@ const userCtrl = {
       return res.error.handleError(res, err);
     }
   },
+
+  updateUser: async (req: Request, res: IResponse) => {
+    try {
+      const { email, name, role, password } = req.body.userData;
+
+      const checkUser = await User.exists({ email });
+      if (checkUser) return res.error.userExist(res);
+
+      const hashNewPassword: string =
+        password && (await hashPassword(password));
+
+      const user = await User.findByIdAndUpdate(req.params.id, {
+        role,
+        name,
+        email,
+        password: hashNewPassword,
+      });
+
+      res.json({
+        message: "User updated",
+      });
+    } catch (err) {
+      return res.error.handleError(res, err);
+    }
+  },
 };
 
 // Hash
