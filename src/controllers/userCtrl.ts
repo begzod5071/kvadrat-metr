@@ -108,14 +108,19 @@ const userCtrl = {
     try {
       const { email, name, role, password } = req.body.userData;
 
-      const checkUser = await User.findById(req.params.id);
-      if (checkUser && checkUser.email !== email)
-        return res.error.userExist(res);
+      const user = await User.findById(req.params.id)
+      if (!user) return res.error.userNotFound(res)
 
+      if (email !== user.email) {
+        const checkEmail = await User.findOne({ email });
+        if (checkEmail)
+          return res.error.userExist(res);
+      }
+      
       const hashNewPassword: string =
         password && (await hashPassword(password));
 
-      const user = await User.findByIdAndUpdate(req.params.id, {
+       await User.findByIdAndUpdate(req.params.id, {
         role,
         name,
         email,
