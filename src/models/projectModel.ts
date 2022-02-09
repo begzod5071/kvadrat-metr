@@ -171,10 +171,6 @@ const projectSchema = new mongoose.Schema(
         default: null,
       },
     },
-    apartments: {
-      type: Array,
-      default: [],
-    },
   },
   {
     timestamps: true,
