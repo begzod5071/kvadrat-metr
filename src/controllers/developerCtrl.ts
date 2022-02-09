@@ -17,54 +17,68 @@ const developerCtrl = {
     try {
       const Allowed = req.isAllowed;
 
-      const developers: IDeveloper[] = await Developer.find(
-        Allowed ? {} : { isShow: true, isActive: true }
-      ).sort({createdAt: -1}).populate("userId");
-
-      const newDevelopers = await Promise.all(
-        developers.map(async (developer: IDeveloper) => {
-          const projects: IProject[] = await Project.find(
-            req.role === "superadmin"
-              ? { developerId: developer._id }
-              : req.isAllowed
-              ? { developerId: developer._id, isShow: true }
-              : { developerId: developer._id, isActive: true, isShow: true }
-          ).populate("developerId")
-
-          const newProjects = await Promise.all(
-            projects.map(async (project: IProject) => {
-              const apartments = await Apartment.find({
-                projectId: project._id,
-              });
-
-              const newApartments = await Promise.all(
-                apartments.map(async (apartment: IApartment) => {
-                  const leads = await Lead.find({
-                    apartmentId: apartment._id,
-                  });
-
-                  apartment.leads = leads;
-
-                  return apartment;
-                })
-              );
-
-              project.apartments = newApartments;
-
-              return project;
-            })
-          );
-
-          developer.projects = newProjects;
-
-          return developer;
-        })
-      );
-
+      const developers = await Developer.aggregate([
+        {
+          $match:
+            req.role === "superadmin" ? {} : { isShow: true, isActive: true },
+        },
+        {
+          $lookup: {
+            from: "projects",
+            let: { developerId: "$_id" },
+            pipeline: [
+              {
+                $match:
+                  req.role === "superadmin"
+                    ? {}
+                    : Allowed
+                    ? { isShow: true }
+                    : { isShow: true, isActive: true },
+              },
+              { $match: { $expr: { $eq: ["$developerId", "$$developerId"] } } },
+              {
+                $lookup: {
+                  from: "apartments",
+                  let: { projectId: "$_id" },
+                  pipeline: [
+                    {
+                      $match: { $expr: { $eq: ["$projectId", "$$projectId"] } },
+                    },
+                    {
+                      $lookup: {
+                        from: "leads",
+                        let: { apartmentId: "$_id" },
+                        pipeline: [
+                          {
+                            $match: {
+                              $expr: { $eq: ["$apartmentId", "$$apartmentId"] },
+                            },
+                          },
+                        ],
+                        as: "leads",
+                      },
+                    },
+                  ],
+                  as: "apartments",
+                },
+              },
+            ],
+            as: "projects",
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            let: { userId: "$userId" },
+            pipeline: [{ $match: { $expr: { $eq: ["$_id", "$$userId"] } } }],
+            as: "manager",
+          },
+        },
+      ]);
       res.json({
         status: "OK",
-        length: newDevelopers.length,
-        developers: newDevelopers,
+        length: developers.length,
+        developers,
       });
     } catch (err: any) {
       return res.error.serverErr(res, err);
@@ -110,7 +124,7 @@ const developerCtrl = {
   },
 
   createDeveloper: async (req: IRequest, res: IResponse) => {
-    try {      
+    try {
       const Allowed = req.isAllowed;
       if (!Allowed) return res.error.notAllowed(res);
       const {
@@ -146,13 +160,14 @@ const developerCtrl = {
       });
       await newDeveloper.save();
 
-      res.status(201).json({ message: "Created developer" , id: newDeveloper._id});
+      res
+        .status(201)
+        .json({ message: "Created developer", id: newDeveloper._id });
     } catch (err: any) {
       return res.error.handleError(res, err);
     }
   },
   updateDeveloper: async (req: IRequest, res: IResponse) => {
-    
     try {
       const Allowed = req.isAllowed;
       if (!Allowed) return res.error.notAllowed(res);
@@ -169,8 +184,7 @@ const developerCtrl = {
   },
   deleteDeveloper: async (req: IRequest, res: IResponse) => {
     try {
-      
-      const {isShow} = req.body
+      const { isShow } = req.body;
 
       const Allowed = req.isAllowed;
       if (!Allowed) return res.error.notAllowed(res);
@@ -186,13 +200,13 @@ const developerCtrl = {
             apartments.map(async (apartment: IApartment) => {
               await Lead.updateMany(
                 { apartmentId: apartment._id },
-                { $set: {isShow: isShow, isActive: isShow } }
+                { $set: { isShow: isShow, isActive: isShow } }
               );
             })
           );
           await Apartment.updateMany(
             { projectId: project._id },
-            { $set: {isShow: isShow, isActive: isShow } }
+            { $set: { isShow: isShow, isActive: isShow } }
           );
         })
       );
@@ -201,7 +215,10 @@ const developerCtrl = {
         { $set: { isShow: isShow, isActive: isShow } }
       );
 
-      await Developer.findByIdAndUpdate(developer._id, { isShow: isShow, isActive: isShow });
+      await Developer.findByIdAndUpdate(developer._id, {
+        isShow: isShow,
+        isActive: isShow,
+      });
 
       res.json({ message: "Deleted developer" });
     } catch (err: any) {
@@ -210,15 +227,14 @@ const developerCtrl = {
   },
 
   hideDeveloper: async (req: IRequest, res: IResponse) => {
-    
     try {
-      const {isActive} = req.body
+      const { isActive } = req.body;
       const Allowed = req.isAllowed;
       if (!Allowed) return res.error.notAllowed(res);
 
       const developer = await Developer.findById(req.params.id);
       if (!developer) return res.error.developerNotFound(res);
-      
+
       await Project.updateMany(
         { developerId: developer._id },
         { $set: { isActive } }

@@ -28,10 +28,6 @@ const apartmentSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    leads: {
-      type: Array,
-      default: [],
-    },
     click: {
       type: Number,
       default: 0,
