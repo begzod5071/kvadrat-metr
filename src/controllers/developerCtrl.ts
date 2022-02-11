@@ -11,73 +11,32 @@ import Developer from "../models/developerModel";
 import Project from "../models/projectModel";
 import Apartment from "../models/apartmentModel";
 import Lead from "../models/leadModel";
+import mongoose from "mongoose";
 
 const developerCtrl = {
   getDevelopers: async (req: IRequest, res: IResponse) => {
     try {
+      const {currentPage, perPage, developerStatus} = req.query
+      
       const Allowed = req.isAllowed;
 
       const developers = await Developer.aggregate([
-        {
-          $match:
-            req.role === "superadmin" ? {} : { isShow: true, isActive: true },
-        },
-        {
-          $lookup: {
-            from: "projects",
-            let: { developerId: "$_id" },
+        { $match: developerStatus === '1' ? {isActive: true} : (req.role === "superadmin" && developerStatus === '0') ? {isActive: false, isShow: true} : (req.role === "superadmin" && developerStatus === '-1') ? {isShow: false} : (req.role === "superadmin") ? {} : { isShow: true, isActive: true }},
+        {$lookup: {from: "users", let: { userId: "$userId" },
             pipeline: [
-              {
-                $match:
-                  req.role === "superadmin"
-                    ? {}
-                    : Allowed
-                    ? { isShow: true }
-                    : { isShow: true, isActive: true },
-              },
-              { $match: { $expr: { $eq: ["$developerId", "$$developerId"] } } },
-              {
-                $lookup: {
-                  from: "apartments",
-                  let: { projectId: "$_id" },
-                  pipeline: [
-                    {
-                      $match: { $expr: { $eq: ["$projectId", "$$projectId"] } },
-                    },
-                    {
-                      $lookup: {
-                        from: "leads",
-                        let: { apartmentId: "$_id" },
-                        pipeline: [
-                          {
-                            $match: {
-                              $expr: { $eq: ["$apartmentId", "$$apartmentId"] },
-                            },
-                          },
-                        ],
-                        as: "leads",
-                      },
-                    },
-                  ],
-                  as: "apartments",
-                },
-              },
+              { $match: { $expr: { $eq: ["$_id", "$$userId"] } } }
             ],
-            as: "projects",
+            as: "manager",
           },
         },
-        {
-          $lookup: {
-            from: "users",
-            let: { userId: "$userId" },
-            pipeline: [{ $match: { $expr: { $eq: ["$_id", "$$userId"] } } }],
-            as: "manager",
+        { 
+          $facet: {
+            metadata: [{ $count: "total" }, { $addFields: { page: Number(currentPage) } }],
+            data: [{ $skip: (Number(currentPage) - 1) * Number(perPage) }, { $limit: Number(perPage) }],
           },
         },
       ]);
       res.json({
-        status: "OK",
-        length: developers.length,
         developers,
       });
     } catch (err: any) {
@@ -85,38 +44,21 @@ const developerCtrl = {
     }
   },
   getDeveloper: async (req: Request, res: IResponse) => {
-    try {
-      const developer = await Developer.findById(req.params.id);
-      if (!developer) return res.error.developerNotFound(res);
-
-      const projects = await Project.find({ developerId: developer._id });
-
-      const newProjects = await Promise.all(
-        projects.map(async (project: IProject) => {
-          const apartments = await Apartment.find({
-            projectId: project._id,
-          });
-
-          const newApartments = await Promise.all(
-            apartments.map(async (apartment: IApartment) => {
-              const leads = await Lead.find({
-                apartmentId: apartment._id,
-              });
-
-              apartment.leads = leads;
-
-              return apartment;
-            })
-          );
-
-          project.apartments = newApartments;
-
-          return project;
-        })
-      );
-
-      developer.projects = newProjects;
-
+    
+    try {      
+      const developer = await Developer.aggregate([
+        { $match: {_id: new mongoose.Types.ObjectId(req.params.id)}},
+        {$lookup: {from: "projects", let: { developerId: "$_id" },
+            pipeline: [
+              { $match: { $expr: { $eq: ["$developerId", "$$developerId"] } } },
+            ],
+            as: "projects",
+          },
+        },
+      ]);
+      
+      if (developer.length === 0) return res.error.developerNotFound(res);
+      
       res.json(developer);
     } catch (err: any) {
       return res.error.serverErr(res, err);
@@ -130,22 +72,6 @@ const developerCtrl = {
       const {
         name,
         image,
-        infoUz,
-        infoRu,
-        infoEn,
-        phone,
-        web,
-        email,
-        callCenter,
-        facebook,
-        instagram,
-        tiktok,
-        telegram,
-        youtube,
-        twitter,
-        address,
-        landmark,
-        map,
       } = req.body;
 
       if (!image) return res.error.invalidUploadImage(res);
@@ -153,10 +79,6 @@ const developerCtrl = {
       const newDeveloper = new Developer({
         name,
         image,
-        info: { uz: infoUz, ru: infoRu, en: infoEn },
-        contact: { web, phone, email, callCenter },
-        social: { facebook, instagram, tiktok, telegram, youtube, twitter },
-        location: { address, landmark, map },
       });
       await newDeveloper.save();
 
@@ -200,13 +122,13 @@ const developerCtrl = {
             apartments.map(async (apartment: IApartment) => {
               await Lead.updateMany(
                 { apartmentId: apartment._id },
-                { $set: { isShow: isShow, isActive: isShow } }
+                { $set: { isShow: isShow } }
               );
             })
           );
           await Apartment.updateMany(
             { projectId: project._id },
-            { $set: { isShow: isShow, isActive: isShow } }
+            { $set: { isShow: isShow } }
           );
         })
       );
