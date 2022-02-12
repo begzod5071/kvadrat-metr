@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { Request } from "express";
 import Apartment from "../models/apartmentModel";
 import Project from "../models/projectModel";
@@ -16,26 +17,20 @@ const apartmentCtrl = {
     try {
       const Allowed = req.isAllowed;
 
-      const apartments: IApartment[] = await Apartment.find(
-        Allowed ? {} : { isShow: true }
-      );
-
-      const newApartment = await Promise.all(
-        apartments.map(async (apartment: IApartment) => {
-          const leads: ILead[] = await Lead.find({
-            apartmentId: apartment._id,
-          });
-
-          apartment.leads = leads;
-
-          return apartment;
-        })
-      );
+      const apartments: IApartment[] = await Apartment.aggregate([
+        { $match: Allowed ? {} : { isShow: true }},
+        { $sort: {"createdAt": -1}},
+        {$lookup: {from: "leads", let: { apartmentId: "$_id" },
+            pipeline: [
+              { $match: { $expr: { $eq: ["$apartmentId", "$$apartmentId"] } } }
+            ],
+            as: "leads",
+          },
+        }        
+      ]);
 
       res.json({
-        status: "OK",
-        length: newApartment.length,
-        apartments: newApartment,
+        apartments,
       });
     } catch (err: any) {
       return res.error.serverErr(res, err);
@@ -43,12 +38,20 @@ const apartmentCtrl = {
   },
   getApartment: async (req: Request, res: IResponse) => {
     try {
-      const apartment = await Apartment.findById(req.params.id);
-      if (!apartment) return res.error.apartmentNotFound(res);
+      await Apartment.findByIdAndUpdate(req.params.id, { $inc: { click: 1 } });
 
-      const leads: ILead[] = await Lead.find({ apartmentId: apartment._id });
+      const apartment = await Apartment.aggregate([
+        { $match: {_id: new mongoose.Types.ObjectId(req.params.id)}},
+        {$lookup: {from: "leads", let: { apartmentId: "$_id" },
+            pipeline: [
+              { $match: { $expr: { $eq: ["$apartmentId", "$$apartmentId"] } } }
+            ],
+            as: "leads",
+          },
+        } 
+      ]);
 
-      apartment.leads = leads;
+      if (apartment.length === 0) return res.error.apartmentNotFound(res);
 
       res.json(apartment);
     } catch (err: any) {
@@ -118,12 +121,11 @@ const apartmentCtrl = {
       const Allowed = req.isAllowed;
       if (!Allowed) return res.error.notAllowed(res);
 
-      const apartmentId: string = req.params.id;
-
       const apartment = await Apartment.findByIdAndUpdate(
-        apartmentId,
+        req.params.id,
         req.body
       );
+
       if (!apartment) return res.error.apartmentNotFound(res);
 
       res.json({
@@ -133,17 +135,18 @@ const apartmentCtrl = {
       return res.error.handleError(res, err);
     }
   },
-  deleteApartment: async (req: IRequest, res: IResponse) => {
+  deleteApartment: async (req: IRequest, res: IResponse) => {req.body.isShow
     try {
       const Allowed = req.isAllowed;
       if (!Allowed) return res.error.notAllowed(res);
 
-      const apartment = await Apartment.findById(req.params.id);
+      const apartment = await Apartment.findByIdAndUpdate(req.params.id, { isShow: req.body.isShow });
       if (!apartment) return res.error.apartmentNotFound(res);
 
-      await Lead.deleteMany({ apartmentId: apartment._id });
-
-      await Apartment.findByIdAndDelete(apartment._id);
+      await Lead.updateMany(
+        { apartmentId: req.params.id },
+        { $set: { isShow: req.body.isShow } }
+      );
 
       res.json({ message: "Apartment deleted" });
     } catch (err: any) {

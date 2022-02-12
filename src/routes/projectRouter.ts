@@ -10,6 +10,10 @@ router
   .post(authRole("createProject"), projectCtrl.createProject);
 
 router
+  .route("/popular")
+  .get(authRole("viewNotActive"), projectCtrl.getPopularProjects);
+
+router
   .route("/project/:id")
   .get(projectCtrl.getOneProject)
   .put(authRole("updateProject"), projectCtrl.updateProject)
