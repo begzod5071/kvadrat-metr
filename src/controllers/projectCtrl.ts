@@ -117,10 +117,10 @@ const projectCtrl = {
       const Allowed = req.isAllowed;
       if (!Allowed) return res.error.notAllowed(res);
 
-      const project = await Project.findById(req.params.id);
+      const project = await Project.findByIdAndUpdate(req.params.id, { isShow: false });
       if (!project) return res.error.projectNotFound(res);
 
-      const apartments = await Apartment.find({ projectId: project._id });
+      const apartments = await Apartment.find({ projectId: req.params.id });
 
       await Promise.all(
         apartments.map(async (apartment: IApartment) => {
@@ -134,9 +134,7 @@ const projectCtrl = {
       await Apartment.updateMany(
         { projectId: project._id },
         { $set: { isShow: false } }
-      );
-
-      await Project.findByIdAndUpdate(project._id, { isShow: false });
+      );      
 
       res.json({ message: "Deleted project" });
     } catch (err: any) {
