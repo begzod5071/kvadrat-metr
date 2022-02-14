@@ -22,6 +22,7 @@ const developerCtrl = {
 
       const developers = await Developer.aggregate([
         { $match: developerStatus === '1' ? {isActive: true} : (req.role === "superadmin" && developerStatus === '0') ? {isActive: false, isShow: true} : (req.role === "superadmin" && developerStatus === '-1') ? {isShow: false} : (req.role === "superadmin") ? {} : { isShow: true, isActive: true }},
+        { $sort: {"createdAt": -1}},
         {$lookup: {from: "users", let: { userId: "$userId" },
             pipeline: [
               { $match: { $expr: { $eq: ["$_id", "$$userId"] } } }
