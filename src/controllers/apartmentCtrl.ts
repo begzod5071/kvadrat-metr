@@ -26,7 +26,7 @@ const apartmentCtrl = {
             ],
             as: "leads",
           },
-        }        
+        }
       ]);
 
       res.json({
@@ -48,7 +48,7 @@ const apartmentCtrl = {
             ],
             as: "leads",
           },
-        } 
+        }
       ]);
 
       if (apartment.length === 0) return res.error.apartmentNotFound(res);
@@ -135,6 +135,7 @@ const apartmentCtrl = {
       return res.error.handleError(res, err);
     }
   },
+  
   deleteApartment: async (req: IRequest, res: IResponse) => {req.body.isShow
     try {
       const Allowed = req.isAllowed;
